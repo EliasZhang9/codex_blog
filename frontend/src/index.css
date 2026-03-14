@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --banana: #ffe66d;
+  --mint: #b8f2d6;
+  --sky: #9fd8ff;
+  --coral: #ff8e72;
+  --grape: #b185db;
+  --ink: #233142;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Comic Neue", "Poppins", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 230, 109, 0.6), transparent 34%),
+    radial-gradient(circle at 80% 0%, rgba(159, 216, 255, 0.45), transparent 32%),
+    radial-gradient(circle at 80% 85%, rgba(177, 133, 219, 0.35), transparent 30%),
+    #f9fbff;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.chaos-card {
+  transform: rotate(-1deg);
+  transition: transform 0.2s ease;
+}
+
+.chaos-card:nth-child(even) {
+  transform: rotate(1deg);
+}
+
+.chaos-card:hover {
+  transform: rotate(0deg) scale(1.01);
+}

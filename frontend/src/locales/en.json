@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "Home",
+    "create": "Drop Your Wisdom 🧠✨",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "chaos": "Chaos Mode"
+  },
+  "auth": {
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirm": "Confirm password",
+    "welcome": "Welcome back, chaos gremlin",
+    "join": "Join the circus"
+  },
+  "post": {
+    "title": "Title",
+    "content": "Content",
+    "create": "Drop Your Wisdom 🧠✨",
+    "edit": "Tune Your Masterpiece",
+    "delete": "Send To The Void 🕳️",
+    "placeholder1": "Share your questionable life advice...",
+    "placeholder2": "Tell the internet what went wrong today...",
+    "created": "Boom! Your genius has been published 🧠💥",
+    "updated": "Post updated. Reality adjusted.",
+    "deleted": "Post successfully deleted into the void.",
+    "empty": "Wow... such empty. Be the first internet philosopher.",
+    "chaos": "Chaos Below 👇",
+    "send": "Send It 🚀",
+    "commentSuccess": "Comment deployed successfully 🚀",
+    "reactions": "Respect +1 😎"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Summoning content...",
+    "error": "Something exploded. Try again.",
+    "comments": "Comments",
+    "noComments": "No chaos yet. Start one.",
+    "by": "by",
+    "delete": "Delete",
+    "edit": "Edit"
+  },
+  "profile": {
+    "title": "User Profile",
+    "posts": "Posts",
+    "comments": "Comments",
+    "recentPosts": "Recent Wisdom",
+    "recentComments": "Recent Chaos"
+  },
+  "footer": {
+    "text": "Crafted for internet philosophers and professional oversharers."
+  }
+}

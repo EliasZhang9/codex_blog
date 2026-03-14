@@ -1,0 +1,54 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useAuth } from "../context/AuthContext";
+import Avatar from "./Avatar";
+import CommentForm from "./CommentForm";
+
+export default function CommentList({ comments, onUpdate, onDelete }) {
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const [editingId, setEditingId] = useState(null);
+
+  if (!comments.length) {
+    return <p className="text-ink/70">{t("common.noComments")}</p>;
+  }
+
+  return (
+    <div className="space-y-3">
+      {comments.map((comment) => (
+        <div key={comment.id} className="rounded-2xl bg-white/90 p-4 shadow">
+          <div className="mb-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Avatar user={comment.author} size="sm" />
+              <span className="font-semibold">{comment.author.username}</span>
+            </div>
+            {user?.id === comment.author.id && (
+              <div className="flex gap-2 text-sm">
+                <button type="button" onClick={() => setEditingId(comment.id)} className="rounded-full bg-sky/40 px-2 py-1">
+                  {t("common.edit")}
+                </button>
+                <button type="button" onClick={() => onDelete(comment.id)} className="rounded-full bg-coral/30 px-2 py-1">
+                  {t("common.delete")}
+                </button>
+              </div>
+            )}
+          </div>
+
+          {editingId === comment.id ? (
+            <CommentForm
+              initialValue={comment.content}
+              submitLabel={t("common.save")}
+              onSubmit={async (value) => {
+                const ok = await onUpdate(comment.id, value);
+                if (ok) setEditingId(null);
+                return false;
+              }}
+            />
+          ) : (
+            <p>{comment.content}</p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}

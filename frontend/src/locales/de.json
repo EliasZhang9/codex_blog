@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "create": "Lass deine Weisheit fallen 🧠✨",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "profile": "Profil",
+    "chaos": "Chaos-Modus"
+  },
+  "auth": {
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirm": "Passwort bestaetigen",
+    "welcome": "Willkommen zurueck, Chaos-Gremlin",
+    "join": "Tritt dem Zirkus bei"
+  },
+  "post": {
+    "title": "Titel",
+    "content": "Inhalt",
+    "create": "Lass deine Weisheit fallen 🧠✨",
+    "edit": "Meisterwerk ueberarbeiten",
+    "delete": "Ins Nichts senden 🕳️",
+    "placeholder1": "Teile deinen fragwuerdigen Lebensrat...",
+    "placeholder2": "Erzaehl dem Internet, was heute schiefging...",
+    "created": "Boom! Dein Genie wurde veroeffentlicht 🧠💥",
+    "updated": "Beitrag aktualisiert. Realitaet angepasst.",
+    "deleted": "Beitrag erfolgreich ins Nichts gesendet.",
+    "empty": "Wow... so leer. Sei der erste Internet-Philosoph.",
+    "chaos": "Chaos unten 👇",
+    "send": "Abschicken 🚀",
+    "commentSuccess": "Kommentar erfolgreich gestartet 🚀",
+    "reactions": "Respekt +1 😎"
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "loading": "Inhalte werden beschworen...",
+    "error": "Etwas ist explodiert. Bitte erneut versuchen.",
+    "comments": "Kommentare",
+    "noComments": "Noch kein Chaos. Fang an.",
+    "by": "von",
+    "delete": "Loeschen",
+    "edit": "Bearbeiten"
+  },
+  "profile": {
+    "title": "Benutzerprofil",
+    "posts": "Beitraege",
+    "comments": "Kommentare",
+    "recentPosts": "Neueste Weisheiten",
+    "recentComments": "Neuester Chaos"
+  },
+  "footer": {
+    "text": "Gebaut fuer Internet-Philosophen und professionelle Oversharer."
+  }
+}

@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+backend/.venv/
+backend/.venv_test/
+backend/.venv_clean/
+backend/forum.db
+backend/test_forum.db
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Env
+backend/.env

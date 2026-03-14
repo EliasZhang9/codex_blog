@@ -1,0 +1,57 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "create": "Suelta tu sabiduria 🧠✨",
+    "login": "Iniciar sesion",
+    "register": "Registrarse",
+    "logout": "Cerrar sesion",
+    "profile": "Perfil",
+    "chaos": "Modo Caos"
+  },
+  "auth": {
+    "username": "Usuario",
+    "email": "Correo",
+    "password": "Contrasena",
+    "confirm": "Confirmar contrasena",
+    "welcome": "Bienvenido de vuelta, duende del caos",
+    "join": "Unete al circo"
+  },
+  "post": {
+    "title": "Titulo",
+    "content": "Contenido",
+    "create": "Suelta tu sabiduria 🧠✨",
+    "edit": "Ajusta tu obra maestra",
+    "delete": "Enviar al vacio 🕳️",
+    "placeholder1": "Comparte tu consejo de vida cuestionable...",
+    "placeholder2": "Cuenta al internet que salio mal hoy...",
+    "created": "Boom! Tu genio ha sido publicado 🧠💥",
+    "updated": "Publicacion actualizada. Realidad alterada.",
+    "deleted": "Publicacion eliminada con exito al vacio.",
+    "empty": "Wow... que vacio. Se el primer filosofo de internet.",
+    "chaos": "Caos abajo 👇",
+    "send": "Enviar 🚀",
+    "commentSuccess": "Comentario desplegado con exito 🚀",
+    "reactions": "Respeto +1 😎"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Invocando contenido...",
+    "error": "Algo exploto. Intentalo otra vez.",
+    "comments": "Comentarios",
+    "noComments": "Aun no hay caos. Empieza uno.",
+    "by": "por",
+    "delete": "Eliminar",
+    "edit": "Editar"
+  },
+  "profile": {
+    "title": "Perfil de usuario",
+    "posts": "Publicaciones",
+    "comments": "Comentarios",
+    "recentPosts": "Sabiduria reciente",
+    "recentComments": "Caos reciente"
+  },
+  "footer": {
+    "text": "Creado para filosofos de internet y sobrecompartidores profesionales."
+  }
+}
