@@ -115,3 +115,35 @@ def test_post_comment_crud_permissions_and_reactions(client: TestClient):
 
     delete_post = client.delete(f"/posts/{post_id}", headers=headers_a)
     assert delete_post.status_code == 204
+
+
+def test_weight_tracker_upsert_and_auth(client: TestClient):
+    user_a = _register(client, "eve", "eve@example.com").json()
+    user_b = _register(client, "frank", "frank@example.com").json()
+    headers_a = _auth_headers(user_a["access_token"])
+    headers_b = _auth_headers(user_b["access_token"])
+
+    unauth = client.get("/weights/me")
+    assert unauth.status_code == 401
+
+    first = client.put("/weights/me/2026-03-14", json={"weight_kg": 70.5}, headers=headers_a)
+    assert first.status_code == 200
+    assert first.json()["entry_date"] == "2026-03-14"
+    assert first.json()["weight_kg"] == 70.5
+
+    update_same_day = client.put("/weights/me/2026-03-14", json={"weight_kg": 71.0}, headers=headers_a)
+    assert update_same_day.status_code == 200
+    assert update_same_day.json()["weight_kg"] == 71.0
+
+    second_day = client.put("/weights/me/2026-03-15", json={"weight_kg": 70.8}, headers=headers_a)
+    assert second_day.status_code == 200
+
+    list_a = client.get("/weights/me", headers=headers_a)
+    assert list_a.status_code == 200
+    assert len(list_a.json()) == 2
+    assert [entry["entry_date"] for entry in list_a.json()] == ["2026-03-14", "2026-03-15"]
+    assert list_a.json()[0]["weight_kg"] == 71.0
+
+    list_b = client.get("/weights/me", headers=headers_b)
+    assert list_b.status_code == 200
+    assert list_b.json() == []

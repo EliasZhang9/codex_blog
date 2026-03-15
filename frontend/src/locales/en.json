@@ -6,6 +6,7 @@
     "register": "Register",
     "logout": "Logout",
     "profile": "Profile",
+    "dashboard": "Dashboard",
     "chaos": "Chaos Mode"
   },
   "auth": {
@@ -50,6 +51,17 @@
     "comments": "Comments",
     "recentPosts": "Recent Wisdom",
     "recentComments": "Recent Chaos"
+  },
+  "dashboard": {
+    "title": "Weight Dashboard",
+    "date": "Date",
+    "weightKg": "Weight (kg)",
+    "saveEntry": "Save Entry",
+    "trend": "Weight Trend",
+    "history": "History",
+    "empty": "No weight entries yet.",
+    "saved": "Weight entry saved.",
+    "invalidWeight": "Enter a valid date and weight."
   },
   "footer": {
     "text": "Crafted for internet philosophers and professional oversharers."

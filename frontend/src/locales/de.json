@@ -6,6 +6,7 @@
     "register": "Registrieren",
     "logout": "Abmelden",
     "profile": "Profil",
+    "dashboard": "Dashboard",
     "chaos": "Chaos-Modus"
   },
   "auth": {
@@ -50,6 +51,17 @@
     "comments": "Kommentare",
     "recentPosts": "Neueste Weisheiten",
     "recentComments": "Neuester Chaos"
+  },
+  "dashboard": {
+    "title": "Gewichts-Dashboard",
+    "date": "Datum",
+    "weightKg": "Gewicht (kg)",
+    "saveEntry": "Eintrag speichern",
+    "trend": "Gewichtsverlauf",
+    "history": "Verlauf",
+    "empty": "Noch keine Gewichtseintraege.",
+    "saved": "Gewichtseintrag gespeichert.",
+    "invalidWeight": "Gib ein gueltiges Datum und Gewicht ein."
   },
   "footer": {
     "text": "Gebaut fuer Internet-Philosophen und professionelle Oversharer."
