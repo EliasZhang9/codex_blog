@@ -6,6 +6,7 @@
     "register": "Registrarse",
     "logout": "Cerrar sesion",
     "profile": "Perfil",
+    "dashboard": "Panel",
     "chaos": "Modo Caos"
   },
   "auth": {
@@ -50,6 +51,20 @@
     "comments": "Comentarios",
     "recentPosts": "Sabiduria reciente",
     "recentComments": "Caos reciente"
+  },
+  "dashboard": {
+    "title": "Panel de peso",
+    "date": "Fecha",
+    "weightKg": "Peso (kg)",
+    "saveEntry": "Guardar entrada",
+    "trend": "Tendencia de peso",
+    "axisDate": "Fecha",
+    "axisWeightKg": "Peso (kg)",
+    "history": "Historial",
+    "empty": "Aun no hay entradas de peso.",
+    "saved": "Entrada de peso guardada.",
+    "deleted": "Entrada de peso eliminada.",
+    "invalidWeight": "Ingresa una fecha y un peso validos."
   },
   "footer": {
     "text": "Creado para filosofos de internet y sobrecompartidores profesionales."

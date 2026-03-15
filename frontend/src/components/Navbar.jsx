@@ -31,6 +31,11 @@ export default function Navbar() {
               {t("nav.profile")}
             </NavLink>
           )}
+          {isAuthenticated && (
+            <NavLink className="rounded-full px-3 py-2 hover:bg-banana/60" to="/dashboard">
+              {t("nav.dashboard")}
+            </NavLink>
+          )}
           {!isAuthenticated ? (
             <>
               <NavLink className="rounded-full px-3 py-2 hover:bg-sky/40" to="/login">

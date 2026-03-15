@@ -20,3 +20,4 @@ class User(Base):
 
     posts = relationship("Post", back_populates="author", cascade="all, delete-orphan")
     comments = relationship("Comment", back_populates="author", cascade="all, delete-orphan")
+    weight_entries = relationship("WeightEntry", back_populates="user", cascade="all, delete-orphan")
