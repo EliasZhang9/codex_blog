@@ -58,6 +58,8 @@
     "weightKg": "Weight (kg)",
     "saveEntry": "Save Entry",
     "trend": "Weight Trend",
+    "axisDate": "Date",
+    "axisWeightKg": "Weight (kg)",
     "history": "History",
     "empty": "No weight entries yet.",
     "saved": "Weight entry saved.",

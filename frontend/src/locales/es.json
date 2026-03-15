@@ -58,6 +58,8 @@
     "weightKg": "Peso (kg)",
     "saveEntry": "Guardar entrada",
     "trend": "Tendencia de peso",
+    "axisDate": "Fecha",
+    "axisWeightKg": "Peso (kg)",
     "history": "Historial",
     "empty": "Aun no hay entradas de peso.",
     "saved": "Entrada de peso guardada.",

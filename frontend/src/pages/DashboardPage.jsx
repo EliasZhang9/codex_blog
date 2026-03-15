@@ -3,14 +3,19 @@ import { useTranslation } from "react-i18next";
 import api from "../api/client";
 import { useToast } from "../context/ToastContext";
 
-function WeightChart({ entries }) {
+function WeightChart({ entries, xAxisLabel, yAxisLabel }) {
   if (!entries.length) {
     return <p className="text-sm text-ink/70">No data yet.</p>;
   }
 
   const width = 600;
-  const height = 200;
-  const padding = 24;
+  const height = 240;
+  const chartLeft = 64;
+  const chartRight = 24;
+  const chartTop = 20;
+  const chartBottom = 48;
+  const innerWidth = width - chartLeft - chartRight;
+  const innerHeight = height - chartTop - chartBottom;
   const values = entries.map((entry) => entry.weight_kg);
   const min = Math.min(...values);
   const max = Math.max(...values);
@@ -21,8 +26,8 @@ function WeightChart({ entries }) {
       const x =
         entries.length === 1
           ? width / 2
-          : padding + (index / (entries.length - 1)) * (width - padding * 2);
-      const y = padding + ((max - entry.weight_kg) / range) * (height - padding * 2);
+          : chartLeft + (index / (entries.length - 1)) * innerWidth;
+      const y = chartTop + ((max - entry.weight_kg) / range) * innerHeight;
       return `${x},${y}`;
     })
     .join(" ");
@@ -31,16 +36,39 @@ function WeightChart({ entries }) {
     <svg
       viewBox={`0 0 ${width} ${height}`}
       role="img"
-      aria-label="Weight trend chart"
+      aria-label={`Weight trend chart with ${xAxisLabel} and ${yAxisLabel} axes`}
       className="h-56 w-full rounded-xl bg-white"
     >
+      <line x1={chartLeft} y1={chartTop} x2={chartLeft} y2={height - chartBottom} stroke="#4a5568" strokeWidth="1.5" />
+      <line
+        x1={chartLeft}
+        y1={height - chartBottom}
+        x2={width - chartRight}
+        y2={height - chartBottom}
+        stroke="#4a5568"
+        strokeWidth="1.5"
+      />
+      <text x={width / 2} y={height - 12} textAnchor="middle" fill="#334155" fontSize="13" fontWeight="600">
+        {xAxisLabel}
+      </text>
+      <text
+        x={18}
+        y={height / 2}
+        transform={`rotate(-90, 18, ${height / 2})`}
+        textAnchor="middle"
+        fill="#334155"
+        fontSize="13"
+        fontWeight="600"
+      >
+        {yAxisLabel}
+      </text>
       <polyline fill="none" stroke="#1f7a8c" strokeWidth="3" points={points} />
       {entries.map((entry, index) => {
         const x =
           entries.length === 1
             ? width / 2
-            : padding + (index / (entries.length - 1)) * (width - padding * 2);
-        const y = padding + ((max - entry.weight_kg) / range) * (height - padding * 2);
+            : chartLeft + (index / (entries.length - 1)) * innerWidth;
+        const y = chartTop + ((max - entry.weight_kg) / range) * innerHeight;
         return <circle key={`${entry.entry_date}-${index}`} cx={x} cy={y} r="4" fill="#022b3a" />;
       })}
     </svg>
@@ -144,7 +172,11 @@ export default function DashboardPage() {
       <div className="rounded-2xl bg-mint/25 p-4">
         <h2 className="font-display text-2xl">{t("dashboard.trend")}</h2>
         <div className="mt-3">
-          <WeightChart entries={sortedEntries} />
+          <WeightChart
+            entries={sortedEntries}
+            xAxisLabel={t("dashboard.axisDate")}
+            yAxisLabel={t("dashboard.axisWeightKg")}
+          />
         </div>
       </div>
 
