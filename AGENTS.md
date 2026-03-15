@@ -8,6 +8,7 @@
 - Never push to `master`.
 - Never merge or rebase while checked out on `master`.
 - Always use a feature branch named: `codex/<short-task-name>`.
+- If the task is not a new issue, continue on the current working `codex/*` branch and do not create a new branch.
 
 ## Required Branch Workflow
 

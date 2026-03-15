@@ -63,6 +63,7 @@
     "history": "Verlauf",
     "empty": "Noch keine Gewichtseintraege.",
     "saved": "Gewichtseintrag gespeichert.",
+    "deleted": "Gewichtseintrag geloescht.",
     "invalidWeight": "Gib ein gueltiges Datum und Gewicht ein."
   },
   "footer": {

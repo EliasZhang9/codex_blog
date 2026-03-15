@@ -83,6 +83,7 @@ export default function DashboardPage() {
   const [entryDate, setEntryDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [weightKg, setWeightKg] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deletingDate, setDeletingDate] = useState(null);
 
   async function loadEntries() {
     const { data } = await api.get("/weights/me");
@@ -125,6 +126,19 @@ export default function DashboardPage() {
       pushToast(error.message, "error");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleDelete(entryDateToDelete) {
+    setDeletingDate(entryDateToDelete);
+    try {
+      await api.delete(`/weights/me/${entryDateToDelete}`);
+      await loadEntries();
+      pushToast(t("dashboard.deleted"), "success");
+    } catch (error) {
+      pushToast(error.message, "error");
+    } finally {
+      setDeletingDate(null);
     }
   }
 
@@ -189,7 +203,17 @@ export default function DashboardPage() {
             {sortedEntries.map((entry) => (
               <li key={entry.entry_date} className="flex items-center justify-between rounded-xl bg-white/80 px-3 py-2">
                 <span>{entry.entry_date}</span>
-                <span className="font-semibold">{entry.weight_kg} kg</span>
+                <div className="flex items-center gap-3">
+                  <span className="font-semibold">{entry.weight_kg} kg</span>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(entry.entry_date)}
+                    disabled={deletingDate === entry.entry_date}
+                    className="rounded-lg bg-coral/20 px-3 py-1 text-sm font-semibold text-ink hover:bg-coral/30 disabled:opacity-60"
+                  >
+                    {deletingDate === entry.entry_date ? t("common.loading") : t("common.delete")}
+                  </button>
+                </div>
               </li>
             ))}
           </ul>

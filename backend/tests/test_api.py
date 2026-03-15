@@ -147,3 +147,23 @@ def test_weight_tracker_upsert_and_auth(client: TestClient):
     list_b = client.get("/weights/me", headers=headers_b)
     assert list_b.status_code == 200
     assert list_b.json() == []
+
+    delete_unauth = client.delete("/weights/me/2026-03-14")
+    assert delete_unauth.status_code == 401
+
+    delete_existing = client.delete("/weights/me/2026-03-14", headers=headers_a)
+    assert delete_existing.status_code == 204
+
+    list_after_delete = client.get("/weights/me", headers=headers_a)
+    assert list_after_delete.status_code == 200
+    assert [entry["entry_date"] for entry in list_after_delete.json()] == ["2026-03-15"]
+
+    delete_missing = client.delete("/weights/me/2026-03-14", headers=headers_a)
+    assert delete_missing.status_code == 204
+
+    user_b_entry = client.put("/weights/me/2026-03-14", json={"weight_kg": 81.2}, headers=headers_b)
+    assert user_b_entry.status_code == 200
+
+    list_b_after = client.get("/weights/me", headers=headers_b)
+    assert list_b_after.status_code == 200
+    assert [entry["entry_date"] for entry in list_b_after.json()] == ["2026-03-14"]

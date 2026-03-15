@@ -1,7 +1,7 @@
 from __future__ import annotations
 from datetime import date
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, get_db
@@ -44,3 +44,20 @@ def upsert_my_weight(
     db.commit()
     db.refresh(entry)
     return WeightEntryOut(entry_date=entry.entry_date, weight_kg=entry.weight_kg)
+
+
+@router.delete("/weights/me/{entry_date}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_my_weight(
+    entry_date: date,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    entry = (
+        db.query(WeightEntry)
+        .filter(WeightEntry.user_id == current_user.id, WeightEntry.entry_date == entry_date)
+        .first()
+    )
+    if entry:
+        db.delete(entry)
+    db.commit()
+    return None

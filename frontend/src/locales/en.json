@@ -63,6 +63,7 @@
     "history": "History",
     "empty": "No weight entries yet.",
     "saved": "Weight entry saved.",
+    "deleted": "Weight entry deleted.",
     "invalidWeight": "Enter a valid date and weight."
   },
   "footer": {

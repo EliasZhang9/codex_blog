@@ -63,6 +63,7 @@
     "history": "Historial",
     "empty": "Aun no hay entradas de peso.",
     "saved": "Entrada de peso guardada.",
+    "deleted": "Entrada de peso eliminada.",
     "invalidWeight": "Ingresa una fecha y un peso validos."
   },
   "footer": {
