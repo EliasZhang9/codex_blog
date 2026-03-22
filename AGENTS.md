@@ -2,11 +2,7 @@
 
 This file should stay short and contain only project-specific instructions.
 
-## Scope
+## Project Docs
 
-- Keep `AGENTS.md` focused on repository-specific guidance for this project.
-- Put reusable or operational workflows, including git workflow rules, in separate markdown files.
-
-## Workflow Docs
-
+- Project-specific working instructions live in [docs/project-instructions.md](docs/project-instructions.md).
 - Git workflow guidance lives in [docs/git-workflow.md](docs/git-workflow.md).
