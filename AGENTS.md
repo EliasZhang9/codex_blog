@@ -7,8 +7,10 @@
 - Never commit on `master`.
 - Never push to `master`.
 - Never merge or rebase while checked out on `master`.
-- Always use a feature branch named: `codex/<short-task-name>`.
-- If the task is not a new issue, continue on the current working `codex/*` branch and do not create a new branch.
+- Always use a task branch named with a conventional type prefix, for example: `fix/<short-task-name>`, `chore/<short-task-name>`, `feat/<short-task-name>`.
+- If the task is tied to a GitHub issue the user explicitly asked to work on, append the issue number at the end of the branch name, for example: `fix/<short-task-name>#4`.
+- If the task is not tied to a GitHub issue the user explicitly asked to work on, do not include an issue number in the branch name.
+- If the task is not a new issue, continue on the current working non-`master` task branch when appropriate and do not create a new branch.
 
 ## Required Branch Workflow
 
@@ -17,28 +19,31 @@
    - `git switch master`
    - `git pull --ff-only`
 2. Create a task branch:
-   - `git switch -c codex/<short-task-name>`
-3. Do all edits and commits on that `codex/*` branch only.
+   - `git switch -c <type>/<short-task-name>`
+   - Examples: `git switch -c fix/login-timeout`, `git switch -c chore/update-readme`
+3. Do all edits and commits on that non-`master` task branch only.
 4. Push branch and open a PR into `master`:
-   - `git push -u origin codex/<short-task-name>`
+   - `git push -u origin <type>/<short-task-name>`
 
 ## Issue Workflow (for new OPEN issues, e.g. `#4`)
 
 1. Confirm the issue is OPEN before starting.
-2. Create a branch from updated `master` using the issue number:
-   - `git switch -c codex/issue-4-<short-task-name>`
+2. If the user explicitly asked to work on GitHub issue `#4`, create a branch from updated `master` that includes the branch type and ends with the issue number:
+   - `git switch -c <type>/<short-task-name>#4`
+   - Example: `git switch -c fix/login-timeout#4`
+   - When using an issue number, explicitly show the full branch name to the user before or when starting work.
 3. Commit with messages that reference the issue:
    - `git commit -m "feat: <change summary> (#4)"`
 4. Open a PR into `master` and include an auto-close keyword in PR body:
    - `Closes #4`
 5. After merge, delete branch:
-   - local: `git branch -d codex/issue-4-<short-task-name>`
-   - remote: `git push origin --delete codex/issue-4-<short-task-name>`
+   - local: `git branch -d <type>/<short-task-name>#4`
+   - remote: `git push origin --delete <type>/<short-task-name>#4`
 
 ## Safety Stops
 
-- If currently on `master`, do not edit files until a `codex/*` branch is created.
-- If a command would modify `master` directly, stop and choose a `codex/*` branch instead.
+- If currently on `master`, do not edit files until a non-`master` task branch is created.
+- If a command would modify `master` directly, stop and choose a task branch such as `fix/*`, `chore/*`, or `feat/*` instead.
 - Do not use destructive git commands (for example: `git reset --hard`, force push, `git checkout -- .`) unless the user explicitly requests them.
 
 ## Remote Protection (Recommended)
