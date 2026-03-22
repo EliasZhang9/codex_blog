@@ -7,7 +7,7 @@ from app.core.errors import bad_request, unauthorized
 from app.core.security import create_access_token, get_password_hash, verify_password
 from app.models.user import User
 from app.schemas.auth import LoginInput, TokenOut
-from app.schemas.user import UserCreate, UserOut
+from app.schemas.user import BmrUpdate, UserCreate, UserOut
 
 router = APIRouter()
 
@@ -48,5 +48,15 @@ def login(payload: LoginInput, db: Session = Depends(get_db)):
 
 @router.get("/me", response_model=UserOut)
 def me(current_user: User = Depends(get_current_user)):
+    return UserOut.model_validate(current_user)
+
+
+@router.put("/me/bmr", response_model=UserOut)
+def update_bmr(payload: BmrUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    current_user.bmr_value = payload.bmr
+    current_user.bmr_inputs = payload.inputs
+    db.add(current_user)
+    db.commit()
+    db.refresh(current_user)
     return UserOut.model_validate(current_user)
 

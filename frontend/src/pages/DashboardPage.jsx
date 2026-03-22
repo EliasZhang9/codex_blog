@@ -8,7 +8,6 @@ import WeightChart from "../components/WeightChart";
 import useWeightEntries from "../hooks/useWeightEntries";
 import WellnessPostCard from "../components/WellnessPostCard";
 
-const BMR_STORAGE_KEY = "bmrData";
 const DEFAULT_BMR_INPUTS = { sex: "female", weight: "", height: "", age: "" };
 
 const RANGE_FILTERS = {
@@ -68,7 +67,7 @@ function calculateBmr({ weight, height, age, sex }) {
 export default function DashboardPage() {
   const { t } = useTranslation();
   const { pushToast } = useToast();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { entries, loading, error, reload } = useWeightEntries();
   const [entryDate, setEntryDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [weightKg, setWeightKg] = useState("");
@@ -99,11 +98,6 @@ export default function DashboardPage() {
   const oneWeekAgo = filterByDays(sortedEntries, 7)[0];
   const streak = computeStreak(sortedEntries);
   const milestones = computeMilestones(sortedEntries);
-  const bmrStorageKey = useMemo(() => {
-    if (!user) return null;
-    const identifier = user.id ?? user.username ?? user.email;
-    return `${BMR_STORAGE_KEY}:${identifier}`;
-  }, [user]);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -126,22 +120,13 @@ export default function DashboardPage() {
   useEffect(() => {
     setBmrInputs(DEFAULT_BMR_INPUTS);
     setBmrValue(null);
-    if (!bmrStorageKey) return;
-    try {
-      const stored = localStorage.getItem(bmrStorageKey);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed?.value) {
-          setBmrValue(parsed.value);
-        }
-        if (parsed?.inputs) {
-          setBmrInputs((prev) => ({ ...prev, ...parsed.inputs }));
-        }
-      }
-    } catch (err) {
-      pushToast(t("dashboard.bmrLoadError"), "error");
+    if (user?.bmr_value) {
+      setBmrValue(user.bmr_value);
     }
-  }, [bmrStorageKey, pushToast, t]);
+    if (user?.bmr_inputs) {
+      setBmrInputs((prev) => ({ ...prev, ...user.bmr_inputs }));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!bmrValue && latest && !bmrInputs.weight) {
@@ -194,21 +179,25 @@ export default function DashboardPage() {
 
   function handleBmrSubmit(event) {
     event.preventDefault();
-    if (!bmrStorageKey) {
-      pushToast(t("dashboard.bmrLoadError"), "error");
-      return;
-    }
     const nextBmr = calculateBmr(bmrInputs);
     if (!nextBmr) {
       pushToast(t("dashboard.invalidBmr"), "error");
       return;
     }
     setBmrValue(nextBmr);
-    localStorage.setItem(
-      bmrStorageKey,
-      JSON.stringify({ value: nextBmr, inputs: bmrInputs, calculatedAt: new Date().toISOString() })
-    );
-    pushToast(t("dashboard.bmrSaved"), "success");
+    api
+      .put("/me/bmr", { bmr: nextBmr, inputs: bmrInputs })
+      .then((response) => {
+        setBmrValue(response.data.bmr_value);
+        if (response.data.bmr_inputs) {
+          setBmrInputs((prev) => ({ ...prev, ...response.data.bmr_inputs }));
+        }
+        updateUser(response.data);
+        pushToast(t("dashboard.bmrSaved"), "success");
+      })
+      .catch((err) => {
+        pushToast(err.message || t("common.error"), "error");
+      });
   }
 
   const handleBmrInputChange = (field) => (event) => {
