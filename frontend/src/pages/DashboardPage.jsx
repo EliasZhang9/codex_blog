@@ -78,6 +78,7 @@ export default function DashboardPage() {
   const [posts, setPosts] = useState([]);
   const [bmrInputs, setBmrInputs] = useState(DEFAULT_BMR_INPUTS);
   const [bmrValue, setBmrValue] = useState(null);
+  const [bmrHydrated, setBmrHydrated] = useState(false);
   const bmrNotifiedRef = useRef(false);
 
   const sortedEntries = useMemo(
@@ -120,12 +121,14 @@ export default function DashboardPage() {
   useEffect(() => {
     setBmrInputs(DEFAULT_BMR_INPUTS);
     setBmrValue(null);
+    setBmrHydrated(false);
     if (user?.bmr_value) {
       setBmrValue(user.bmr_value);
     }
     if (user?.bmr_inputs) {
       setBmrInputs((prev) => ({ ...prev, ...user.bmr_inputs }));
     }
+    setBmrHydrated(!!user);
   }, [user]);
 
   useEffect(() => {
@@ -135,12 +138,12 @@ export default function DashboardPage() {
   }, [bmrInputs.weight, bmrValue, latest]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !bmrHydrated) return;
     if (!bmrValue && !bmrNotifiedRef.current) {
       pushToast(t("dashboard.bmrPromptToast"), "info");
       bmrNotifiedRef.current = true;
     }
-  }, [bmrValue, pushToast, t, user]);
+  }, [bmrValue, bmrHydrated, pushToast, t, user]);
 
 
   async function handleSubmit(event) {
