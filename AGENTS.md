@@ -6,3 +6,4 @@ This file should stay short and contain only project-specific instructions.
 
 - Project-specific working instructions live in [docs/project-instructions.md](docs/project-instructions.md).
 - Git workflow guidance lives in [docs/git-workflow.md](docs/git-workflow.md).
+- App setup and run instructions live in [README.md](README.md).
