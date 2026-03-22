@@ -27,3 +27,8 @@
 - Frontend dev server: run from `frontend/` with `npm run dev`.
 - Backend dev server: run from `backend/` with `uvicorn main:app --reload`.
 - Backend tests: run from `backend/` with `pytest`.
+
+## Codex Run Behavior
+
+- When starting the frontend or backend dev server for the user, launch it in a visible terminal window so the user can see live logs.
+- Do not start the frontend or backend dev server as a detached background process unless the user explicitly asks for that behavior.
