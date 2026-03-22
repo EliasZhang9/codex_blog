@@ -1,46 +1,49 @@
 {
   "nav": {
     "home": "Home",
-    "create": "Drop Your Wisdom 🧠✨",
+    "create": "Share an Update",
+    "createShort": "Post",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
     "profile": "Profile",
     "dashboard": "Dashboard",
-    "chaos": "Chaos Mode"
+    "community": "Community",
+    "progress": "Progress"
   },
   "auth": {
     "username": "Username",
     "email": "Email",
     "password": "Password",
     "confirm": "Confirm password",
-    "welcome": "Welcome back, chaos gremlin",
-    "join": "Join the circus"
+    "welcome": "Welcome back, friend",
+    "join": "Join the journey"
   },
   "post": {
     "title": "Title",
     "content": "Content",
-    "create": "Drop Your Wisdom 🧠✨",
-    "edit": "Tune Your Masterpiece",
-    "delete": "Send To The Void 🕳️",
-    "placeholder1": "Share your questionable life advice...",
-    "placeholder2": "Tell the internet what went wrong today...",
-    "created": "Boom! Your genius has been published 🧠💥",
-    "updated": "Post updated. Reality adjusted.",
-    "deleted": "Post successfully deleted into the void.",
-    "empty": "Wow... such empty. Be the first internet philosopher.",
-    "chaos": "Chaos Below 👇",
-    "send": "Send It 🚀",
-    "commentSuccess": "Comment deployed successfully 🚀",
-    "reactions": "Respect +1 😎"
+    "create": "Share an Update",
+    "edit": "Edit your update",
+    "delete": "Delete",
+    "placeholder1": "Share a small win, challenge, or thought...",
+    "placeholder2": "Add any details that help others cheer you on...",
+    "created": "Your update is live!",
+    "updated": "Update saved.",
+    "deleted": "Update deleted.",
+    "empty": "No updates yet. Start the first one.",
+    "commentsSection": "Comments",
+    "loginToComment": "Login to leave a comment.",
+    "send": "Send",
+    "commentSuccess": "Comment posted",
+    "reactions": "Reactions"
   },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
     "loading": "Summoning content...",
-    "error": "Something exploded. Try again.",
+    "error": "Something went wrong. Try again.",
     "comments": "Comments",
-    "noComments": "No chaos yet. Start one.",
+    "noComments": "No comments yet.",
     "by": "by",
     "delete": "Delete",
     "edit": "Edit"
@@ -49,10 +52,33 @@
     "title": "User Profile",
     "posts": "Posts",
     "comments": "Comments",
-    "recentPosts": "Recent Wisdom",
-    "recentComments": "Recent Chaos"
+    "recentPosts": "Recent Updates",
+    "recentComments": "Recent Comments",
+    "weightSummary": "Your streak and logs are private to you."
   },
   "dashboard": {
+    "subtitle": "Positive accountability",
+    "tagline": "Log small wins, see progress, and share with your crew.",
+    "viewCommunity": "Open community",
+    "currentWeight": "Current weight",
+    "sinceLast": "vs last entry",
+    "noPrevious": "Log twice to see change.",
+    "weeklyChange": "7-day change",
+    "weeklyCopy": "Gentle trends over the last week.",
+    "streak": "Consistency streak",
+    "streakCopy": "Log daily to grow your streak.",
+    "entries": "Entries",
+    "entriesCopy": "Total weight logs saved.",
+    "quickLog": "Quick log",
+    "today": "Today",
+    "logToday": "Log today",
+    "milestones": "Milestones",
+    "auto": "Auto-tracked",
+    "milestonesEmpty": "Add a few entries to unlock milestones.",
+    "milestoneLabel": "{{amount}} down",
+    "achieved": "Done",
+    "remaining": "{{amount}} kg to go",
+    "streakMilestone": "7-day streak",
     "title": "Weight Dashboard",
     "date": "Date",
     "weightKg": "Weight (kg)",
@@ -64,9 +90,26 @@
     "empty": "No weight entries yet.",
     "saved": "Weight entry saved.",
     "deleted": "Weight entry deleted.",
-    "invalidWeight": "Enter a valid date and weight."
+    "invalidWeight": "Enter a valid date and weight.",
+    "range": { "week": "7d", "month": "30d", "year": "365d", "all": "All" },
+    "communityLabel": "Community vibes",
+    "communityTitle": "You’re not alone",
+    "communityCopy": "Cheer on others and share your updates.",
+    "quickPost": "Share update",
+    "prefillTitle": "Quick wellness update",
+    "prefillContent": "Today I...",
+    "noPosts": "No posts yet. Start the first one!"
+  },
+  "progress": {
+    "subtitle": "Deep dive",
+    "title": "Progress"
+  },
+  "community": {
+    "subtitle": "Social support",
+    "title": "Community",
+    "copy": "Swap encouragement, wins, and struggles with friends."
   },
   "footer": {
-    "text": "Crafted for internet philosophers and professional oversharers."
+    "text": "Built to support healthier habits together."
   }
 }

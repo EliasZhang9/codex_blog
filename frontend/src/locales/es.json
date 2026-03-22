@@ -1,46 +1,49 @@
 {
   "nav": {
     "home": "Inicio",
-    "create": "Suelta tu sabiduria 🧠✨",
+    "create": "Comparte una nota",
+    "createShort": "Publicar",
     "login": "Iniciar sesion",
     "register": "Registrarse",
     "logout": "Cerrar sesion",
     "profile": "Perfil",
     "dashboard": "Panel",
-    "chaos": "Modo Caos"
+    "community": "Comunidad",
+    "progress": "Progreso"
   },
   "auth": {
     "username": "Usuario",
     "email": "Correo",
     "password": "Contrasena",
     "confirm": "Confirmar contrasena",
-    "welcome": "Bienvenido de vuelta, duende del caos",
-    "join": "Unete al circo"
+    "welcome": "Bienvenido de vuelta",
+    "join": "Unete al viaje"
   },
   "post": {
     "title": "Titulo",
     "content": "Contenido",
-    "create": "Suelta tu sabiduria 🧠✨",
-    "edit": "Ajusta tu obra maestra",
-    "delete": "Enviar al vacio 🕳️",
-    "placeholder1": "Comparte tu consejo de vida cuestionable...",
-    "placeholder2": "Cuenta al internet que salio mal hoy...",
-    "created": "Boom! Tu genio ha sido publicado 🧠💥",
-    "updated": "Publicacion actualizada. Realidad alterada.",
-    "deleted": "Publicacion eliminada con exito al vacio.",
-    "empty": "Wow... que vacio. Se el primer filosofo de internet.",
-    "chaos": "Caos abajo 👇",
-    "send": "Enviar 🚀",
-    "commentSuccess": "Comentario desplegado con exito 🚀",
-    "reactions": "Respeto +1 😎"
+    "create": "Comparte una nota",
+    "edit": "Editar tu nota",
+    "delete": "Eliminar",
+    "placeholder1": "Comparte un logro, reto o idea...",
+    "placeholder2": "Agrega detalles para que otros te animen...",
+    "created": "Tu nota esta publicada.",
+    "updated": "Nota actualizada.",
+    "deleted": "Nota eliminada.",
+    "empty": "Aun no hay notas. Crea la primera.",
+    "commentsSection": "Comentarios",
+    "loginToComment": "Inicia sesion para comentar.",
+    "send": "Enviar",
+    "commentSuccess": "Comentario publicado",
+    "reactions": "Reacciones"
   },
   "common": {
     "save": "Guardar",
     "cancel": "Cancelar",
     "loading": "Invocando contenido...",
-    "error": "Algo exploto. Intentalo otra vez.",
+    "error": "Algo salio mal. Intentalo otra vez.",
     "comments": "Comentarios",
-    "noComments": "Aun no hay caos. Empieza uno.",
+    "noComments": "Aun no hay comentarios.",
     "by": "por",
     "delete": "Eliminar",
     "edit": "Editar"
@@ -49,10 +52,33 @@
     "title": "Perfil de usuario",
     "posts": "Publicaciones",
     "comments": "Comentarios",
-    "recentPosts": "Sabiduria reciente",
-    "recentComments": "Caos reciente"
+    "recentPosts": "Actualizaciones recientes",
+    "recentComments": "Comentarios recientes",
+    "weightSummary": "Tu racha y registros son privados para ti."
   },
   "dashboard": {
+    "subtitle": "Responsabilidad positiva",
+    "tagline": "Registra pequenos logros, ve progreso y comparte con tu equipo.",
+    "viewCommunity": "Abrir comunidad",
+    "currentWeight": "Peso actual",
+    "sinceLast": "vs ultima entrada",
+    "noPrevious": "Registra dos veces para ver cambios.",
+    "weeklyChange": "Cambio 7 dias",
+    "weeklyCopy": "Tendencias suaves de la ultima semana.",
+    "streak": "Racha de constancia",
+    "streakCopy": "Registra diario para crecer la racha.",
+    "entries": "Entradas",
+    "entriesCopy": "Total de registros guardados.",
+    "quickLog": "Registro rapido",
+    "today": "Hoy",
+    "logToday": "Registrar hoy",
+    "milestones": "Hitos",
+    "auto": "Auto seguimiento",
+    "milestonesEmpty": "Agrega algunas entradas para ver hitos.",
+    "milestoneLabel": "{{amount}} menos",
+    "achieved": "Listo",
+    "remaining": "Faltan {{amount}} kg",
+    "streakMilestone": "Racha de 7 dias",
     "title": "Panel de peso",
     "date": "Fecha",
     "weightKg": "Peso (kg)",
@@ -64,9 +90,26 @@
     "empty": "Aun no hay entradas de peso.",
     "saved": "Entrada de peso guardada.",
     "deleted": "Entrada de peso eliminada.",
-    "invalidWeight": "Ingresa una fecha y un peso validos."
+    "invalidWeight": "Ingresa una fecha y un peso validos.",
+    "range": { "week": "7d", "month": "30d", "year": "365d", "all": "Todo" },
+    "communityLabel": "Vibras de comunidad",
+    "communityTitle": "No estas solo",
+    "communityCopy": "Anima a otros y comparte tus avances.",
+    "quickPost": "Compartir actualizacion",
+    "prefillTitle": "Actualizacion rapida de bienestar",
+    "prefillContent": "Hoy...",
+    "noPosts": "Sin publicaciones aun. ¡Comienza la primera!"
+  },
+  "progress": {
+    "subtitle": "Vista detallada",
+    "title": "Progreso"
+  },
+  "community": {
+    "subtitle": "Apoyo social",
+    "title": "Comunidad",
+    "copy": "Intercambia animo, logros y retos con otros."
   },
   "footer": {
-    "text": "Creado para filosofos de internet y sobrecompartidores profesionales."
+    "text": "Creado para apoyar habitos mas saludables en comunidad."
   }
 }

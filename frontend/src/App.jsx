@@ -11,10 +11,13 @@ import CreatePostPage from "./pages/CreatePostPage";
 import EditPostPage from "./pages/EditPostPage";
 import ProfilePage from "./pages/ProfilePage";
 import DashboardPage from "./pages/DashboardPage";
+import BottomNav from "./components/BottomNav";
+import CommunityPage from "./pages/CommunityPage";
+import ProgressPage from "./pages/ProgressPage";
 
 export default function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-20 md:pb-0">
       <Navbar />
       <main className="mx-auto w-full max-w-6xl px-4 py-6">
         <Routes>
@@ -34,23 +37,33 @@ export default function App() {
             path="/posts/:id/edit"
             element={
               <ProtectedRoute>
-                <EditPostPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/users/:username" element={<ProfilePage />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+              <EditPostPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/users/:username" element={<ProfilePage />} />
+        <Route
+          path="/progress"
+          element={
+            <ProtectedRoute>
+              <ProgressPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/community" element={<CommunityPage />} />
+      </Routes>
       </main>
       <Footer />
       <NotificationToast />
+      <BottomNav />
     </div>
   );
 }
