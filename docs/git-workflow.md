@@ -28,15 +28,18 @@
 ## Issue Workflow
 
 1. Confirm the issue is OPEN before starting.
-2. If the user explicitly asked to work on GitHub issue `#4`, create a branch from updated `master` that includes the branch type and ends with the issue number:
+2. Switch to `master` and update it before creating the issue branch:
+   - `git switch master`
+   - `git pull --ff-only`
+3. If the user explicitly asked to work on GitHub issue `#4`, create a branch from updated `master` that includes the branch type and ends with the issue number:
    - `git switch -c <type>/<short-task-name>#4`
    - Example: `git switch -c fix/login-timeout#4`
    - When using an issue number, explicitly show the full branch name to the user before or when starting work.
-3. Commit with messages that reference the issue:
+4. Commit with messages that reference the issue:
    - `git commit -m "feat: <change summary> (#4)"`
-4. Open a PR into `master` and include an auto-close keyword in PR body:
+5. Open a PR into `master` and include an auto-close keyword in PR body:
    - `Closes #4`
-5. After merge, delete branch:
+6. After merge, delete branch:
    - local: `git branch -d <type>/<short-task-name>#4`
    - remote: `git push origin --delete <type>/<short-task-name>#4`
 
