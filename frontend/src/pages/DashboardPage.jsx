@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../api/client";
@@ -6,6 +6,8 @@ import { useToast } from "../context/ToastContext";
 import WeightChart from "../components/WeightChart";
 import useWeightEntries from "../hooks/useWeightEntries";
 import WellnessPostCard from "../components/WellnessPostCard";
+
+const BMR_STORAGE_KEY = "bmrData";
 
 const RANGE_FILTERS = {
   all: null,
@@ -50,6 +52,17 @@ function computeMilestones(sortedEntries) {
   return milestones.map((m) => ({ ...m, achieved: loss >= m.target, delta: Math.max(0, m.target - loss) }));
 }
 
+function calculateBmr({ weight, height, age, sex }) {
+  const w = Number(weight);
+  const h = Number(height);
+  const a = Number(age);
+  if ([w, h, a].some((value) => Number.isNaN(value) || value <= 0)) {
+    return null;
+  }
+  const base = 10 * w + 6.25 * h - 5 * a;
+  return Math.round(sex === "male" ? base + 5 : base - 161);
+}
+
 export default function DashboardPage() {
   const { t } = useTranslation();
   const { pushToast } = useToast();
@@ -61,6 +74,28 @@ export default function DashboardPage() {
   const [chartRange, setChartRange] = useState("month");
   const [historyRange, setHistoryRange] = useState("all");
   const [posts, setPosts] = useState([]);
+  const [bmrInputs, setBmrInputs] = useState({ sex: "female", weight: "", height: "", age: "" });
+  const [bmrValue, setBmrValue] = useState(null);
+  const bmrNotifiedRef = useRef(false);
+
+  const sortedEntries = useMemo(
+    () => [...entries].sort((a, b) => a.entry_date.localeCompare(b.entry_date)),
+    [entries]
+  );
+  const filteredForChart = useMemo(
+    () => filterByDays(sortedEntries, RANGE_FILTERS[chartRange]),
+    [sortedEntries, chartRange]
+  );
+  const filteredHistory = useMemo(
+    () => filterByDays(sortedEntries, RANGE_FILTERS[historyRange]),
+    [sortedEntries, historyRange]
+  );
+
+  const latest = sortedEntries[sortedEntries.length - 1];
+  const previous = sortedEntries[sortedEntries.length - 2];
+  const oneWeekAgo = filterByDays(sortedEntries, 7)[0];
+  const streak = computeStreak(sortedEntries);
+  const milestones = computeMilestones(sortedEntries);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -80,25 +115,36 @@ export default function DashboardPage() {
     }
   }, [error, pushToast]);
 
-  const sortedEntries = useMemo(
-    () => [...entries].sort((a, b) => a.entry_date.localeCompare(b.entry_date)),
-    [entries]
-  );
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(BMR_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.value) {
+          setBmrValue(parsed.value);
+        }
+        if (parsed?.inputs) {
+          setBmrInputs((prev) => ({ ...prev, ...parsed.inputs }));
+        }
+      }
+    } catch (err) {
+      pushToast(t("dashboard.bmrLoadError"), "error");
+    }
+  }, [pushToast, t]);
 
-  const filteredForChart = useMemo(
-    () => filterByDays(sortedEntries, RANGE_FILTERS[chartRange]),
-    [sortedEntries, chartRange]
-  );
-  const filteredHistory = useMemo(
-    () => filterByDays(sortedEntries, RANGE_FILTERS[historyRange]),
-    [sortedEntries, historyRange]
-  );
+  useEffect(() => {
+    if (!bmrValue && latest && !bmrInputs.weight) {
+      setBmrInputs((prev) => ({ ...prev, weight: String(latest.weight_kg) }));
+    }
+  }, [bmrInputs.weight, bmrValue, latest]);
 
-  const latest = sortedEntries[sortedEntries.length - 1];
-  const previous = sortedEntries[sortedEntries.length - 2];
-  const oneWeekAgo = filterByDays(sortedEntries, 7)[0];
-  const streak = computeStreak(sortedEntries);
-  const milestones = computeMilestones(sortedEntries);
+  useEffect(() => {
+    if (!bmrValue && !bmrNotifiedRef.current) {
+      pushToast(t("dashboard.bmrPromptToast"), "info");
+      bmrNotifiedRef.current = true;
+    }
+  }, [bmrValue, pushToast, t]);
+
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -134,6 +180,30 @@ export default function DashboardPage() {
     }
   }
 
+  function handleBmrSubmit(event) {
+    event.preventDefault();
+    const nextBmr = calculateBmr(bmrInputs);
+    if (!nextBmr) {
+      pushToast(t("dashboard.invalidBmr"), "error");
+      return;
+    }
+    setBmrValue(nextBmr);
+    localStorage.setItem(BMR_STORAGE_KEY, JSON.stringify({ value: nextBmr, inputs: bmrInputs, calculatedAt: new Date().toISOString() }));
+    pushToast(t("dashboard.bmrSaved"), "success");
+  }
+
+  const handleBmrInputChange = (field) => (event) => {
+    setBmrInputs((prev) => ({ ...prev, [field]: event.target.value }));
+  };
+
+  const useLatestWeight = () => {
+    if (latest) {
+      setBmrInputs((prev) => ({ ...prev, weight: String(latest.weight_kg) }));
+    } else {
+      pushToast(t("dashboard.invalidWeight"), "error");
+    }
+  };
+
   if (loading) {
     return <p>{t("common.loading")}</p>;
   }
@@ -154,7 +224,7 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-5">
         <div className="rounded-cozy bg-white p-4 shadow-playful">
           <p className="text-xs uppercase text-ink/60">{t("dashboard.currentWeight")}</p>
           <p className="mt-2 text-3xl font-bold">{latest ? `${latest.weight_kg} kg` : "—"}</p>
@@ -182,6 +252,13 @@ export default function DashboardPage() {
           <p className="text-xs uppercase text-ink/60">{t("dashboard.entries")}</p>
           <p className="mt-2 text-2xl font-bold">{sortedEntries.length}</p>
           <p className="text-sm text-ink/70">{t("dashboard.entriesCopy")}</p>
+        </div>
+        <div className="rounded-cozy bg-white p-4 shadow-playful">
+          <p className="text-xs uppercase text-ink/60">{t("dashboard.bmrLabel")}</p>
+          <p className="mt-2 text-3xl font-bold">{bmrValue ? `${bmrValue} kcal` : "—"}</p>
+          <p className="text-sm text-ink/70">
+            {bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissingShort")}
+          </p>
         </div>
       </div>
 
@@ -261,6 +338,93 @@ export default function DashboardPage() {
             </li>
           </ul>
         </div>
+      </div>
+
+      <div className="rounded-cozy bg-white p-4 shadow-playful">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs uppercase text-ink/60">{t("dashboard.bmrLabel")}</p>
+            <h2 className="font-display text-xl">{t("dashboard.bmrHeadline")}</h2>
+            <p className="text-sm text-ink/70">{bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissing")}</p>
+          </div>
+          <div className="rounded-full bg-sky/50 px-4 py-2 text-sm font-semibold text-ink">
+            {bmrValue ? `${bmrValue} kcal` : t("dashboard.bmrEmptyPill")}
+          </div>
+        </div>
+        {!bmrValue && (
+          <div className="mt-3 flex items-start gap-2 rounded-soft bg-banana/40 px-3 py-2 text-sm text-ink">
+            <span>🔔</span>
+            <p>{t("dashboard.bmrPrompt")}</p>
+          </div>
+        )}
+        <form className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4" onSubmit={handleBmrSubmit}>
+          <label className="flex flex-col gap-1 text-sm font-semibold">
+            {t("dashboard.bmrSex")}
+            <select
+              className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+              value={bmrInputs.sex}
+              onChange={handleBmrInputChange("sex")}
+            >
+              <option value="female">{t("dashboard.bmrFemale")}</option>
+              <option value="male">{t("dashboard.bmrMale")}</option>
+            </select>
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-semibold">
+            {t("dashboard.bmrAge")}
+            <input
+              className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+              type="number"
+              min="10"
+              max="120"
+              value={bmrInputs.age}
+              onChange={handleBmrInputChange("age")}
+              placeholder="30"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-semibold">
+            {t("dashboard.bmrHeight")}
+            <input
+              className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+              type="number"
+              min="100"
+              max="250"
+              value={bmrInputs.height}
+              onChange={handleBmrInputChange("height")}
+              placeholder="170"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-semibold">
+            {t("dashboard.bmrWeight")}
+            <div className="flex gap-2">
+              <input
+                className="w-full rounded-soft border border-ink/10 bg-white px-3 py-2"
+                type="number"
+                min="20"
+                max="300"
+                step="0.1"
+                value={bmrInputs.weight}
+                onChange={handleBmrInputChange("weight")}
+                placeholder="70.5"
+              />
+              <button
+                type="button"
+                onClick={useLatestWeight}
+                className="whitespace-nowrap rounded-full bg-sky/50 px-3 py-2 text-xs font-semibold text-ink shadow-playful hover:bg-sky/60"
+              >
+                {t("dashboard.useLatest")}
+              </button>
+            </div>
+          </label>
+          <div className="md:col-span-2 lg:col-span-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm text-ink/70">{t("dashboard.bmrHelp")}</p>
+            <button
+              type="submit"
+              className="rounded-full bg-ink px-4 py-3 text-sm font-semibold text-white shadow-playful transition hover:opacity-90"
+            >
+              {t("dashboard.bmrCalculate")}
+            </button>
+          </div>
+        </form>
       </div>
 
       <div className="rounded-cozy bg-white p-4 shadow-playful">
