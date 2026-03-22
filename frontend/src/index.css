@@ -3,39 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --banana: #ffe66d;
-  --mint: #b8f2d6;
-  --sky: #9fd8ff;
-  --coral: #ff8e72;
-  --grape: #b185db;
-  --ink: #233142;
+  --banana: #ffe9a3;
+  --mint: #b9e8ce;
+  --sky: #b8d8ff;
+  --coral: #ffb38a;
+  --grape: #b7a8e3;
+  --ink: #1f2d3d;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Comic Neue", "Poppins", sans-serif;
+  font-family: "Manrope", "Poppins", sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at 20% 20%, rgba(255, 230, 109, 0.6), transparent 34%),
-    radial-gradient(circle at 80% 0%, rgba(159, 216, 255, 0.45), transparent 32%),
-    radial-gradient(circle at 80% 85%, rgba(177, 133, 219, 0.35), transparent 30%),
-    #f9fbff;
+    radial-gradient(circle at 16% 18%, rgba(185, 232, 206, 0.5), transparent 32%),
+    radial-gradient(circle at 82% 8%, rgba(184, 216, 255, 0.4), transparent 30%),
+    radial-gradient(circle at 78% 86%, rgba(255, 179, 138, 0.35), transparent 30%),
+    #f7fbff;
 }
 
 #root {
   min-height: 100vh;
-}
-
-.chaos-card {
-  transform: rotate(-1deg);
-  transition: transform 0.2s ease;
-}
-
-.chaos-card:nth-child(even) {
-  transform: rotate(1deg);
-}
-
-.chaos-card:hover {
-  transform: rotate(0deg) scale(1.01);
 }

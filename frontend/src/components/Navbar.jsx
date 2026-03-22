@@ -1,20 +1,18 @@
 import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
-import { useChaos } from "../context/ChaosContext";
 import Avatar from "./Avatar";
 import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();
-  const { chaosMode, toggleChaos } = useChaos();
 
   return (
     <header className="sticky top-0 z-40 border-b-4 border-ink/10 bg-white/80 backdrop-blur">
       <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link to="/" className="font-display text-2xl font-bold text-ink">
-          Giggle Forum
+          WellNest
         </Link>
 
         <div className="flex items-center gap-2">
@@ -24,6 +22,14 @@ export default function Navbar() {
           {isAuthenticated && (
             <NavLink className="rounded-full px-3 py-2 hover:bg-mint" to="/posts/new">
               {t("nav.create")}
+            </NavLink>
+          )}
+          <NavLink className="rounded-full px-3 py-2 hover:bg-sky/30" to="/community">
+            {t("nav.community")}
+          </NavLink>
+          {isAuthenticated && (
+            <NavLink className="rounded-full px-3 py-2 hover:bg-mint/60" to="/progress">
+              {t("nav.progress")}
             </NavLink>
           )}
           {isAuthenticated && user && (
@@ -53,15 +59,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={toggleChaos}
-            className={`rounded-full px-3 py-1 text-xs font-bold ${
-              chaosMode ? "animate-wiggle bg-coral text-white" : "bg-sky/50"
-            }`}
-          >
-            {t("nav.chaos")}
-          </button>
           <LanguageSwitcher />
           {user && <Avatar user={user} size="sm" />}
         </div>

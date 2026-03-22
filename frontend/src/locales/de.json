@@ -1,46 +1,49 @@
 {
   "nav": {
     "home": "Startseite",
-    "create": "Lass deine Weisheit fallen 🧠✨",
+    "create": "Teile ein Update",
+    "createShort": "Posten",
     "login": "Anmelden",
     "register": "Registrieren",
     "logout": "Abmelden",
     "profile": "Profil",
     "dashboard": "Dashboard",
-    "chaos": "Chaos-Modus"
+    "community": "Community",
+    "progress": "Fortschritt"
   },
   "auth": {
     "username": "Benutzername",
     "email": "E-Mail",
     "password": "Passwort",
     "confirm": "Passwort bestaetigen",
-    "welcome": "Willkommen zurueck, Chaos-Gremlin",
-    "join": "Tritt dem Zirkus bei"
+    "welcome": "Willkommen zurueck",
+    "join": "Mach mit auf der Reise"
   },
   "post": {
     "title": "Titel",
     "content": "Inhalt",
-    "create": "Lass deine Weisheit fallen 🧠✨",
-    "edit": "Meisterwerk ueberarbeiten",
-    "delete": "Ins Nichts senden 🕳️",
-    "placeholder1": "Teile deinen fragwuerdigen Lebensrat...",
-    "placeholder2": "Erzaehl dem Internet, was heute schiefging...",
-    "created": "Boom! Dein Genie wurde veroeffentlicht 🧠💥",
-    "updated": "Beitrag aktualisiert. Realitaet angepasst.",
-    "deleted": "Beitrag erfolgreich ins Nichts gesendet.",
-    "empty": "Wow... so leer. Sei der erste Internet-Philosoph.",
-    "chaos": "Chaos unten 👇",
-    "send": "Abschicken 🚀",
-    "commentSuccess": "Kommentar erfolgreich gestartet 🚀",
-    "reactions": "Respekt +1 😎"
+    "create": "Teile ein Update",
+    "edit": "Update bearbeiten",
+    "delete": "Loeschen",
+    "placeholder1": "Teile einen Erfolg, eine Herausforderung oder Idee...",
+    "placeholder2": "Fuege Details hinzu, damit andere dich anfeuern koennen...",
+    "created": "Dein Update ist live.",
+    "updated": "Update gespeichert.",
+    "deleted": "Update geloescht.",
+    "empty": "Noch keine Updates. Starte das erste.",
+    "commentsSection": "Kommentare",
+    "loginToComment": "Anmelden, um zu kommentieren.",
+    "send": "Senden",
+    "commentSuccess": "Kommentar gespeichert",
+    "reactions": "Reaktionen"
   },
   "common": {
     "save": "Speichern",
     "cancel": "Abbrechen",
     "loading": "Inhalte werden beschworen...",
-    "error": "Etwas ist explodiert. Bitte erneut versuchen.",
+    "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen.",
     "comments": "Kommentare",
-    "noComments": "Noch kein Chaos. Fang an.",
+    "noComments": "Noch keine Kommentare.",
     "by": "von",
     "delete": "Loeschen",
     "edit": "Bearbeiten"
@@ -49,10 +52,33 @@
     "title": "Benutzerprofil",
     "posts": "Beitraege",
     "comments": "Kommentare",
-    "recentPosts": "Neueste Weisheiten",
-    "recentComments": "Neuester Chaos"
+    "recentPosts": "Neueste Updates",
+    "recentComments": "Neueste Kommentare",
+    "weightSummary": "Deine Serie und Logs sind nur fuer dich sichtbar."
   },
   "dashboard": {
+    "subtitle": "Positive Verantwortlichkeit",
+    "tagline": "Logge kleine Schritte, sieh Fortschritt und teile ihn.",
+    "viewCommunity": "Community oeffnen",
+    "currentWeight": "Aktuelles Gewicht",
+    "sinceLast": "vs letzter Eintrag",
+    "noPrevious": "Zweimal loggen fuer Vergleich.",
+    "weeklyChange": "7-Tage-Aenderung",
+    "weeklyCopy": "Sanfte Trends der letzten Woche.",
+    "streak": "Serien-Tage",
+    "streakCopy": "Taeglich loggen fuer Serie.",
+    "entries": "Eintraege",
+    "entriesCopy": "Gespeicherte Gewichtslogs.",
+    "quickLog": "Schnelles Log",
+    "today": "Heute",
+    "logToday": "Heute loggen",
+    "milestones": "Meilensteine",
+    "auto": "Auto-Tracking",
+    "milestonesEmpty": "Fuege ein paar Eintraege hinzu, um Meilensteine zu sehen.",
+    "milestoneLabel": "{{amount}} weniger",
+    "achieved": "Erreicht",
+    "remaining": "Noch {{amount}} kg",
+    "streakMilestone": "7-Tage-Serie",
     "title": "Gewichts-Dashboard",
     "date": "Datum",
     "weightKg": "Gewicht (kg)",
@@ -64,9 +90,26 @@
     "empty": "Noch keine Gewichtseintraege.",
     "saved": "Gewichtseintrag gespeichert.",
     "deleted": "Gewichtseintrag geloescht.",
-    "invalidWeight": "Gib ein gueltiges Datum und Gewicht ein."
+    "invalidWeight": "Gib ein gueltiges Datum und Gewicht ein.",
+    "range": { "week": "7T", "month": "30T", "year": "365T", "all": "Alle" },
+    "communityLabel": "Community-Gefuehl",
+    "communityTitle": "Du bist nicht allein",
+    "communityCopy": "Feuere andere an und teile Updates.",
+    "quickPost": "Update teilen",
+    "prefillTitle": "Schnelles Wellness-Update",
+    "prefillContent": "Heute...",
+    "noPosts": "Noch keine Posts. Starte den ersten!"
+  },
+  "progress": {
+    "subtitle": "Detailansicht",
+    "title": "Fortschritt"
+  },
+  "community": {
+    "subtitle": "Soziale Unterstuetzung",
+    "title": "Community",
+    "copy": "Tausche Ermutigung, Erfolge und Herausforderungen aus."
   },
   "footer": {
-    "text": "Gebaut fuer Internet-Philosophen und professionelle Oversharer."
+    "text": "Gebaut, um gemeinsam gesunde Gewohnheiten zu staerken."
   }
 }

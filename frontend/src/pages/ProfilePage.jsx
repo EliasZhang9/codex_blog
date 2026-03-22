@@ -1,16 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../api/client";
 import Avatar from "../components/Avatar";
 import { useToast } from "../context/ToastContext";
+import { useAuth } from "../context/AuthContext";
+import useWeightEntries from "../hooks/useWeightEntries";
 
 export default function ProfilePage() {
   const { username } = useParams();
   const { t } = useTranslation();
   const { pushToast } = useToast();
+  const { user } = useAuth();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const isCurrentUser = user?.username === username;
+  const { entries } = useWeightEntries(isCurrentUser);
+
+  const totalWeightEntries = entries.length;
+  const streak = useMemo(() => {
+    const sorted = [...entries].sort((a, b) => a.entry_date.localeCompare(b.entry_date));
+    let count = 0;
+    const today = new Date();
+    for (let i = sorted.length - 1; i >= 0; i -= 1) {
+      const date = new Date(sorted[i].entry_date + "T00:00:00");
+      const expected = new Date();
+      expected.setDate(today.getDate() - count);
+      if (date.toDateString() === expected.toDateString()) {
+        count += 1;
+      } else {
+        break;
+      }
+    }
+    return count;
+  }, [entries]);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -40,7 +63,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-3">
         <div className="rounded-2xl bg-banana/30 p-4">
           <p className="font-semibold">{t("profile.posts")}: {profile.posts_count}</p>
           <h2 className="mt-2 font-display text-xl">{t("profile.recentPosts")}</h2>
@@ -64,6 +87,21 @@ export default function ProfilePage() {
             ))}
           </ul>
         </div>
+
+        {isCurrentUser && (
+          <div className="rounded-2xl bg-sky/40 p-4">
+            <h2 className="font-display text-xl">{t("dashboard.title")}</h2>
+            <p className="text-sm text-ink/70">{t("profile.weightSummary")}</p>
+            <div className="mt-2 flex items-center justify-between rounded-xl bg-white/80 px-3 py-2">
+              <span className="text-sm font-semibold">{t("dashboard.entries")}</span>
+              <span className="text-lg font-bold">{totalWeightEntries}</span>
+            </div>
+            <div className="mt-2 flex items-center justify-between rounded-xl bg-white/80 px-3 py-2">
+              <span className="text-sm font-semibold">{t("dashboard.streak")}</span>
+              <span className="text-lg font-bold">{streak}🔥</span>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

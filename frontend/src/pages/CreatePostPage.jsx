@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../api/client";
 import { useToast } from "../context/ToastContext";
@@ -8,7 +8,9 @@ export default function CreatePostPage() {
   const { t } = useTranslation();
   const { pushToast } = useToast();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ title: "", content: "" });
+  const location = useLocation();
+  const prefill = location.state || {};
+  const [form, setForm] = useState({ title: prefill.title || "", content: prefill.content || "" });
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (event) => {

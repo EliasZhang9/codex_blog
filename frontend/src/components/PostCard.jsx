@@ -3,13 +3,13 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import Avatar from "./Avatar";
 
-export default function PostCard({ post, onReact, chaosMode }) {
+export default function PostCard({ post, onReact }) {
   const { t } = useTranslation();
 
   return (
     <motion.article
       whileHover={{ y: -4, scale: 1.01 }}
-      className={`rounded-3xl border border-white/70 bg-white/90 p-5 shadow-playful ${chaosMode ? "chaos-card" : ""}`}
+      className="rounded-3xl border border-white/70 bg-white/90 p-5 shadow-playful"
     >
       <div className="mb-3 flex items-center gap-2">
         <Avatar user={post.author} size="sm" />

@@ -4,16 +4,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        banana: "#ffe66d",
-        mint: "#b8f2d6",
-        sky: "#9fd8ff",
-        coral: "#ff8e72",
-        grape: "#b185db",
-        ink: "#233142"
+        banana: "#ffe9a3", // softer yellow accent
+        mint: "#b9e8ce", // calm green
+        sky: "#b8d8ff", // light blue
+        coral: "#ffb38a", // warm accent
+        grape: "#b7a8e3", // gentle purple accent
+        ink: "#1f2d3d" // slightly deeper for contrast
       },
       fontFamily: {
-        display: ["Fredoka", "Poppins", "sans-serif"],
-        body: ["Comic Neue", "Poppins", "sans-serif"]
+        display: ["Manrope", "Poppins", "sans-serif"],
+        body: ["Manrope", "Poppins", "sans-serif"]
       },
       boxShadow: {
         playful: "0 10px 20px rgba(35, 49, 66, 0.16)",
@@ -26,6 +26,14 @@ export default {
       },
       animation: {
         wiggle: "wiggle 1.4s ease-in-out infinite"
+      },
+      borderRadius: {
+        soft: "14px",
+        cozy: "18px"
+      },
+      spacing: {
+        4.5: "1.125rem",
+        5.5: "1.375rem"
       }
     },
   },

@@ -126,8 +126,8 @@ export default function PostDetailPage() {
       </div>
 
       <div>
-        <h2 className="mb-3 font-display text-2xl">{t("post.chaos")}</h2>
-        {user ? <CommentForm onSubmit={createComment} /> : <p className="mb-4 text-sm">Login to join the chaos.</p>}
+        <h2 className="mb-3 font-display text-2xl">{t("post.commentsSection")}</h2>
+        {user ? <CommentForm onSubmit={createComment} /> : <p className="mb-4 text-sm">{t("post.loginToComment")}</p>}
         <CommentList comments={post.comments} onUpdate={updateComment} onDelete={deleteComment} />
       </div>
     </section>

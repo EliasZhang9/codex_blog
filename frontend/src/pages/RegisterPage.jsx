@@ -28,7 +28,7 @@ export default function RegisterPage() {
         password: form.password,
       });
       login(data.access_token, data.user);
-      pushToast("Welcome to the chaos");
+      pushToast("Welcome! Your wellness journey starts now.");
       navigate("/");
     } catch (error) {
       pushToast(error.message, "error");

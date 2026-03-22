@@ -3,12 +3,10 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import api from "../api/client";
 import PostCard from "../components/PostCard";
-import { useChaos } from "../context/ChaosContext";
 import { useToast } from "../context/ToastContext";
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const { chaosMode } = useChaos();
   const { pushToast } = useToast();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,7 +49,7 @@ export default function HomePage() {
     <div className="grid gap-4">
       {posts.map((post, index) => (
         <motion.div key={post.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.06 }}>
-          <PostCard post={post} onReact={handleReact} chaosMode={chaosMode} />
+          <PostCard post={post} onReact={handleReact} />
         </motion.div>
       ))}
     </div>
