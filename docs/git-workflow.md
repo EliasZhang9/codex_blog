@@ -37,9 +37,10 @@
    - When using an issue number, explicitly show the full branch name to the user before or when starting work.
 4. Commit with messages that reference the issue:
    - `git commit -m "feat: <change summary> (#4)"`
-5. Open a PR into `master` and include an auto-close keyword in the PR body at creation time:
+5. Open a PR into `master` and include an auto-close keyword in the PR body at creation time only when the PR is explicitly tied to a GitHub issue:
    - `Closes #4`
    - Example: `gh pr create --base master --title "feat: <change summary>" --body "Closes #4"`
+   - If the user does not explicitly say the PR is issue-related, do not add `Closes #...`, `Fixes #...`, or `Resolves #...`.
 6. After merge, delete branch:
    - local: `git branch -d <type>/<short-task-name>#4`
    - remote: `git push origin --delete <type>/<short-task-name>#4`
