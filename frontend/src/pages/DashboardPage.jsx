@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import api from "../api/client";
 import { useToast } from "../context/ToastContext";
+import { useAuth } from "../context/AuthContext";
 import WeightChart from "../components/WeightChart";
 import useWeightEntries from "../hooks/useWeightEntries";
 import WellnessPostCard from "../components/WellnessPostCard";
 
 const BMR_STORAGE_KEY = "bmrData";
+const DEFAULT_BMR_INPUTS = { sex: "female", weight: "", height: "", age: "" };
 
 const RANGE_FILTERS = {
   all: null,
@@ -66,6 +68,7 @@ function calculateBmr({ weight, height, age, sex }) {
 export default function DashboardPage() {
   const { t } = useTranslation();
   const { pushToast } = useToast();
+  const { user } = useAuth();
   const { entries, loading, error, reload } = useWeightEntries();
   const [entryDate, setEntryDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [weightKg, setWeightKg] = useState("");
@@ -74,7 +77,7 @@ export default function DashboardPage() {
   const [chartRange, setChartRange] = useState("month");
   const [historyRange, setHistoryRange] = useState("all");
   const [posts, setPosts] = useState([]);
-  const [bmrInputs, setBmrInputs] = useState({ sex: "female", weight: "", height: "", age: "" });
+  const [bmrInputs, setBmrInputs] = useState(DEFAULT_BMR_INPUTS);
   const [bmrValue, setBmrValue] = useState(null);
   const bmrNotifiedRef = useRef(false);
 
@@ -96,6 +99,11 @@ export default function DashboardPage() {
   const oneWeekAgo = filterByDays(sortedEntries, 7)[0];
   const streak = computeStreak(sortedEntries);
   const milestones = computeMilestones(sortedEntries);
+  const bmrStorageKey = useMemo(() => {
+    if (!user) return null;
+    const identifier = user.id ?? user.username ?? user.email;
+    return `${BMR_STORAGE_KEY}:${identifier}`;
+  }, [user]);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -116,8 +124,11 @@ export default function DashboardPage() {
   }, [error, pushToast]);
 
   useEffect(() => {
+    setBmrInputs(DEFAULT_BMR_INPUTS);
+    setBmrValue(null);
+    if (!bmrStorageKey) return;
     try {
-      const stored = localStorage.getItem(BMR_STORAGE_KEY);
+      const stored = localStorage.getItem(bmrStorageKey);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed?.value) {
@@ -130,7 +141,7 @@ export default function DashboardPage() {
     } catch (err) {
       pushToast(t("dashboard.bmrLoadError"), "error");
     }
-  }, [pushToast, t]);
+  }, [bmrStorageKey, pushToast, t]);
 
   useEffect(() => {
     if (!bmrValue && latest && !bmrInputs.weight) {
@@ -139,11 +150,12 @@ export default function DashboardPage() {
   }, [bmrInputs.weight, bmrValue, latest]);
 
   useEffect(() => {
+    if (!user) return;
     if (!bmrValue && !bmrNotifiedRef.current) {
       pushToast(t("dashboard.bmrPromptToast"), "info");
       bmrNotifiedRef.current = true;
     }
-  }, [bmrValue, pushToast, t]);
+  }, [bmrValue, pushToast, t, user]);
 
 
   async function handleSubmit(event) {
@@ -182,13 +194,20 @@ export default function DashboardPage() {
 
   function handleBmrSubmit(event) {
     event.preventDefault();
+    if (!bmrStorageKey) {
+      pushToast(t("dashboard.bmrLoadError"), "error");
+      return;
+    }
     const nextBmr = calculateBmr(bmrInputs);
     if (!nextBmr) {
       pushToast(t("dashboard.invalidBmr"), "error");
       return;
     }
     setBmrValue(nextBmr);
-    localStorage.setItem(BMR_STORAGE_KEY, JSON.stringify({ value: nextBmr, inputs: bmrInputs, calculatedAt: new Date().toISOString() }));
+    localStorage.setItem(
+      bmrStorageKey,
+      JSON.stringify({ value: nextBmr, inputs: bmrInputs, calculatedAt: new Date().toISOString() })
+    );
     pushToast(t("dashboard.bmrSaved"), "success");
   }
 
