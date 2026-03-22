@@ -9,28 +9,29 @@ function WeightChart({ entries, xAxisLabel, yAxisLabel }) {
   }
 
   const width = 600;
-  const height = 240;
+  const height = 280;
   const chartLeft = 64;
   const chartRight = 24;
   const chartTop = 20;
-  const chartBottom = 48;
+  const chartBottom = 88;
   const innerWidth = width - chartLeft - chartRight;
   const innerHeight = height - chartTop - chartBottom;
   const values = entries.map((entry) => entry.weight_kg);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || 1;
+  const yTicks = [...new Set(values)].sort((a, b) => b - a);
 
-  const points = entries
-    .map((entry, index) => {
-      const x =
-        entries.length === 1
-          ? width / 2
-          : chartLeft + (index / (entries.length - 1)) * innerWidth;
-      const y = chartTop + ((max - entry.weight_kg) / range) * innerHeight;
-      return `${x},${y}`;
-    })
-    .join(" ");
+  const chartPoints = entries.map((entry, index) => {
+    const x =
+      entries.length === 1
+        ? width / 2
+        : chartLeft + (index / (entries.length - 1)) * innerWidth;
+    const y = chartTop + ((max - entry.weight_kg) / range) * innerHeight;
+    return { ...entry, x, y };
+  });
+
+  const points = chartPoints.map((point) => `${point.x},${point.y}`).join(" ");
 
   return (
     <svg
@@ -48,6 +49,39 @@ function WeightChart({ entries, xAxisLabel, yAxisLabel }) {
         stroke="#4a5568"
         strokeWidth="1.5"
       />
+      {yTicks.map((tick) => {
+        const y = chartTop + ((max - tick) / range) * innerHeight;
+        return (
+          <g key={tick}>
+            <line x1={chartLeft - 6} y1={y} x2={chartLeft} y2={y} stroke="#4a5568" strokeWidth="1.5" />
+            <text x={chartLeft - 10} y={y + 4} textAnchor="end" fill="#334155" fontSize="12">
+              {tick}
+            </text>
+          </g>
+        );
+      })}
+      {chartPoints.map((point) => (
+        <g key={point.entry_date}>
+          <line
+            x1={point.x}
+            y1={height - chartBottom}
+            x2={point.x}
+            y2={height - chartBottom + 6}
+            stroke="#4a5568"
+            strokeWidth="1.5"
+          />
+          <text
+            x={point.x}
+            y={height - chartBottom + 20}
+            transform={`rotate(-35, ${point.x}, ${height - chartBottom + 20})`}
+            textAnchor="end"
+            fill="#334155"
+            fontSize="12"
+          >
+            {point.entry_date}
+          </text>
+        </g>
+      ))}
       <text x={width / 2} y={height - 12} textAnchor="middle" fill="#334155" fontSize="13" fontWeight="600">
         {xAxisLabel}
       </text>
@@ -63,14 +97,9 @@ function WeightChart({ entries, xAxisLabel, yAxisLabel }) {
         {yAxisLabel}
       </text>
       <polyline fill="none" stroke="#1f7a8c" strokeWidth="3" points={points} />
-      {entries.map((entry, index) => {
-        const x =
-          entries.length === 1
-            ? width / 2
-            : chartLeft + (index / (entries.length - 1)) * innerWidth;
-        const y = chartTop + ((max - entry.weight_kg) / range) * innerHeight;
-        return <circle key={`${entry.entry_date}-${index}`} cx={x} cy={y} r="4" fill="#022b3a" />;
-      })}
+      {chartPoints.map((point) => (
+        <circle key={point.entry_date} cx={point.x} cy={point.y} r="4" fill="#022b3a" />
+      ))}
     </svg>
   );
 }
