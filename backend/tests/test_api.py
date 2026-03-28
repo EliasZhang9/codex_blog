@@ -158,6 +158,31 @@ def test_weight_tracker_upsert_and_auth(client: TestClient):
     assert list_after_delete.status_code == 200
     assert [entry["entry_date"] for entry in list_after_delete.json()] == ["2026-03-15"]
 
+
+def test_bmr_is_user_scoped(client: TestClient):
+    user_a = _register(client, "gina", "gina@example.com").json()
+    user_b = _register(client, "hank", "hank@example.com").json()
+    headers_a = _auth_headers(user_a["access_token"])
+    headers_b = _auth_headers(user_b["access_token"])
+
+    update_missing_auth = client.put("/me/bmr", json={"bmr": 1500})
+    assert update_missing_auth.status_code == 401
+
+    set_bmr_a = client.put(
+        "/me/bmr",
+        json={"bmr": 1500, "inputs": {"age": 30, "sex": "female", "weight": 70, "height": 170}},
+        headers=headers_a,
+    )
+    assert set_bmr_a.status_code == 200
+    assert set_bmr_a.json()["bmr_value"] == 1500
+    assert set_bmr_a.json()["bmr_inputs"]["age"] == 30
+
+    me_a = client.get("/me", headers=headers_a)
+    assert me_a.json()["bmr_value"] == 1500
+
+    me_b = client.get("/me", headers=headers_b)
+    assert me_b.json()["bmr_value"] is None
+
     delete_missing = client.delete("/weights/me/2026-03-14", headers=headers_a)
     assert delete_missing.status_code == 204
 
