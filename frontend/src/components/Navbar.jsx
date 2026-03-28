@@ -2,127 +2,105 @@ import { Link, NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import Avatar from "./Avatar";
-import LanguageSwitcher from "./LanguageSwitcher";
 
 export default function Navbar() {
   const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();
 
+  const profilePath = isAuthenticated && user ? `/users/${user.username}` : "/login";
+
   return (
     <header className="sticky top-0 z-40 glass-panel shadow-ambient">
-      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4 md:px-10">
-        <Link to="/" className="font-display text-2xl font-bold text-onSurface">
-          WellNest
+      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-4 md:px-8">
+        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold text-onSurface">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-white">•</span>
+          Ethereal Wellness
         </Link>
 
-        <div className="flex flex-wrap items-center gap-2 md:gap-3">
+        <div className="hidden items-center gap-2 rounded-full bg-surfaceContainerLow px-3 py-1 shadow-inner md:flex">
           <NavLink
             className={({ isActive }) =>
-              `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
+              `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                isActive ? "bg-surfaceContainerLowest text-onSurface shadow-floating" : "text-onSurfaceVariant hover:bg-surfaceContainerLowest"
               }`
             }
             to="/"
           >
             {t("nav.home")}
           </NavLink>
-          {isAuthenticated && (
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? "bg-secondaryContainer text-onSecondaryContainer shadow-floating"
-                    : "bg-secondaryContainer/70 text-onSecondaryContainer hover:shadow-playful"
-                }`
-              }
-              to="/posts/new"
-            >
-              {t("nav.create")}
-            </NavLink>
-          )}
           <NavLink
             className={({ isActive }) =>
-              `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
+              `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                isActive ? "bg-surfaceContainerLowest text-onSurface shadow-floating" : "text-onSurfaceVariant hover:bg-surfaceContainerLowest"
               }`
             }
             to="/community"
           >
-            {t("nav.community")}
+            Food Log
           </NavLink>
-          {isAuthenticated && (
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                  isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
-                }`
-              }
-              to="/progress"
-            >
-              {t("nav.progress")}
-            </NavLink>
-          )}
-          {isAuthenticated && user && (
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                  isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
-                }`
-              }
-              to={`/users/${user.username}`}
-            >
-              {t("nav.profile")}
-            </NavLink>
-          )}
-          {isAuthenticated && (
-            <NavLink
-              className={({ isActive }) =>
-                `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                  isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
-                }`
-              }
-              to="/dashboard"
-            >
-              {t("nav.dashboard")}
-            </NavLink>
-          )}
-          {!isAuthenticated ? (
+          <NavLink
+            className={({ isActive }) =>
+              `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                isActive ? "bg-surfaceContainerLowest text-onSurface shadow-floating" : "text-onSurfaceVariant hover:bg-surfaceContainerLowest"
+              }`
+            }
+            to="/dashboard"
+          >
+            Weight Tracker
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `rounded-full px-4 py-2 text-sm font-semibold transition ${
+                isActive ? "bg-surfaceContainerLowest text-onSurface shadow-floating" : "text-onSurfaceVariant hover:bg-surfaceContainerLowest"
+              }`
+            }
+            to={profilePath}
+          >
+            Profile
+          </NavLink>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="hidden h-10 w-10 items-center justify-center rounded-full bg-surfaceContainerLow text-lg text-onSurface shadow-inner transition hover:shadow-floating md:inline-flex"
+            aria-label="Notifications"
+          >
+            🔔
+          </button>
+          {isAuthenticated ? (
             <>
               <NavLink
-                className={({ isActive }) =>
-                  `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                    isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
-                  }`
-                }
+                to="/posts/new"
+                className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-floating transition hover:-translate-y-0.5 md:inline-flex"
+              >
+                +
+              </NavLink>
+              <button
+                className="hidden rounded-full px-3 py-2 text-sm font-semibold text-onSurfaceVariant transition hover:bg-surfaceContainerLow md:inline-flex"
+                type="button"
+                onClick={logout}
+              >
+                {t("nav.logout")}
+              </button>
+              {user && <Avatar user={user} size="sm" />}
+            </>
+          ) : (
+            <div className="hidden items-center gap-2 md:flex">
+              <NavLink
                 to="/login"
+                className="rounded-full px-3 py-2 text-sm font-semibold text-onSurfaceVariant transition hover:bg-surfaceContainerLow"
               >
                 {t("nav.login")}
               </NavLink>
               <NavLink
-                className={({ isActive }) =>
-                  `rounded-full px-3 py-2 text-sm font-semibold transition ${
-                    isActive ? "bg-surfaceContainerLow text-onSurface" : "text-onSurfaceVariant hover:bg-surfaceContainerLow"
-                  }`
-                }
                 to="/register"
+                className="rounded-full bg-primary text-white px-3 py-2 text-sm font-semibold shadow-floating transition hover:-translate-y-0.5"
               >
                 {t("nav.register")}
               </NavLink>
-            </>
-          ) : (
-            <button
-              className="rounded-full px-3 py-2 text-sm font-semibold text-onSurfaceVariant transition hover:bg-surfaceContainerLow"
-              type="button"
-              onClick={logout}
-            >
-              {t("nav.logout")}
-            </button>
+            </div>
           )}
-        </div>
-
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          {user && <Avatar user={user} size="sm" />}
         </div>
       </nav>
     </header>

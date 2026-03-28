@@ -118,7 +118,8 @@
     "quickPost": "Update teilen",
     "prefillTitle": "Schnelles Wellness-Update",
     "prefillContent": "Heute...",
-    "noPosts": "Noch keine Posts. Starte den ersten!"
+    "noPosts": "Noch keine Posts. Starte den ersten!",
+    "logFoodPlaceholder": "Essensprotokollierung kommt bald."
   },
   "progress": {
     "subtitle": "Detailansicht",
@@ -128,6 +129,15 @@
     "subtitle": "Soziale Unterstuetzung",
     "title": "Community",
     "copy": "Tausche Ermutigung, Erfolge und Herausforderungen aus."
+  },
+  "sidebar": {
+    "title": "Mein Zufluchtsort",
+    "subtitle": "Vitals-Überblick",
+    "quickActions": "Schnellaktionen",
+    "goals": "Ziele",
+    "settings": "Einstellungen",
+    "cta": "Mahlzeit protokollieren",
+    "ctaToast": "Essensprotokollierung kommt bald."
   },
   "footer": {
     "text": "Gebaut, um gemeinsam gesunde Gewohnheiten zu staerken."

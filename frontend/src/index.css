@@ -3,43 +3,32 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #0f5238;
-  --color-primary-container: #2d6a4f;
-  --color-primary-fixed: #b1f0ce;
-  --color-secondary-container: #a3d8fe;
-  --color-on-secondary-container: #255f80;
-  --color-surface: #f8faf9;
-  --color-surface-container-low: #f2f4f3;
+  --color-primary: #0f5b3a;
+  --color-primary-container: #1e7a52;
+  --color-primary-fixed: #b8e6c8;
+  --color-accent: #6aa8c6;
+  --color-secondary-container: #d8eef6;
+  --color-on-secondary-container: #1f556b;
+  --color-surface: #f7fbf7;
+  --color-surface-container-low: #f1f6f2;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-high: #e6e9e8;
-  --color-surface-bright: #f8faf9b3;
-  --color-surface-dim: #d8dada;
-  --color-on-surface: #191c1c;
-  --color-on-surface-variant: #404943;
-  --color-outline-variant: #bfc9c1;
-}
-
-.dark {
-  --color-surface: #111816;
-  --color-surface-container-low: #16201c;
-  --color-surface-container-lowest: #1d2924;
-  --color-surface-container-high: #25322d;
-  --color-surface-bright: #1e2a25cc;
-  --color-surface-dim: #d8dada;
-  --color-on-surface: #e8efec;
-  --color-on-surface-variant: #c3c8c5;
-  --color-outline-variant: #6b756f;
+  --color-surface-container-high: #e7efe8;
+  --color-surface-bright: #ffffffc7;
+  --color-surface-dim: #cdd6ce;
+  --color-on-surface: #1b1f1d;
+  --color-on-surface-variant: #55635c;
+  --color-outline-variant: #d5ddd6;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Plus Jakarta Sans", "Manrope", sans-serif;
+  font-family: "Sora", "Inter", system-ui, sans-serif;
   color: var(--color-on-surface);
   background:
-    radial-gradient(circle at 20% 18%, rgba(177, 240, 206, 0.25), transparent 35%),
-    radial-gradient(circle at 80% 10%, rgba(163, 216, 254, 0.22), transparent 32%),
-    radial-gradient(circle at 80% 88%, rgba(45, 106, 79, 0.12), transparent 30%),
+    radial-gradient(circle at 22% 18%, rgba(184, 230, 200, 0.28), transparent 38%),
+    radial-gradient(circle at 82% 14%, rgba(137, 198, 196, 0.22), transparent 32%),
+    radial-gradient(circle at 78% 86%, rgba(15, 91, 58, 0.08), transparent 28%),
     var(--color-surface);
 }
 

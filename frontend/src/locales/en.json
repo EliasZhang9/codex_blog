@@ -118,7 +118,8 @@
     "quickPost": "Share update",
     "prefillTitle": "Quick wellness update",
     "prefillContent": "Today I...",
-    "noPosts": "No posts yet. Start the first one!"
+    "noPosts": "No posts yet. Start the first one!",
+    "logFoodPlaceholder": "Food logging is coming soon."
   },
   "progress": {
     "subtitle": "Deep dive",
@@ -128,6 +129,15 @@
     "subtitle": "Social support",
     "title": "Community",
     "copy": "Swap encouragement, wins, and struggles with friends."
+  },
+  "sidebar": {
+    "title": "My Sanctuary",
+    "subtitle": "Vitals overview",
+    "quickActions": "Quick Actions",
+    "goals": "Goals",
+    "settings": "Settings",
+    "cta": "Log Daily Meal",
+    "ctaToast": "Food logging is coming soon. Stay tuned!"
   },
   "footer": {
     "text": "Built to support healthier habits together."

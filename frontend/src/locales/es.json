@@ -118,7 +118,8 @@
     "quickPost": "Compartir actualizacion",
     "prefillTitle": "Actualizacion rapida de bienestar",
     "prefillContent": "Hoy...",
-    "noPosts": "Sin publicaciones aun. ¡Comienza la primera!"
+    "noPosts": "Sin publicaciones aun. ¡Comienza la primera!",
+    "logFoodPlaceholder": "El registro de comida llega pronto."
   },
   "progress": {
     "subtitle": "Vista detallada",
@@ -128,6 +129,15 @@
     "subtitle": "Apoyo social",
     "title": "Comunidad",
     "copy": "Intercambia animo, logros y retos con otros."
+  },
+  "sidebar": {
+    "title": "Mi Santuario",
+    "subtitle": "Resumen de signos vitales",
+    "quickActions": "Acciones rápidas",
+    "goals": "Metas",
+    "settings": "Ajustes",
+    "cta": "Registrar comida diaria",
+    "ctaToast": "El registro de comida llega pronto."
   },
   "footer": {
     "text": "Creado para apoyar habitos mas saludables en comunidad."

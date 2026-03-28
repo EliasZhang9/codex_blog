@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import api from "../api/client";
 import { useToast } from "../context/ToastContext";
 import { useAuth } from "../context/AuthContext";
-import WeightChart from "../components/WeightChart";
 import useWeightEntries from "../hooks/useWeightEntries";
 import WellnessPostCard from "../components/WellnessPostCard";
 
@@ -14,7 +13,7 @@ const RANGE_FILTERS = {
   all: null,
   week: 7,
   month: 30,
-  year: 365,
+  year: 365
 };
 
 function filterByDays(entries, days) {
@@ -22,35 +21,6 @@ function filterByDays(entries, days) {
   const cutoff = new Date();
   cutoff.setDate(cutoff.getDate() - days);
   return entries.filter((entry) => new Date(entry.entry_date) >= cutoff);
-}
-
-function computeStreak(sortedEntries) {
-  let streak = 0;
-  const today = new Date();
-  for (let i = sortedEntries.length - 1; i >= 0; i -= 1) {
-    const entryDate = new Date(sortedEntries[i].entry_date + "T00:00:00");
-    const expectedDate = new Date();
-    expectedDate.setDate(today.getDate() - streak);
-    if (entryDate.toDateString() === expectedDate.toDateString()) {
-      streak += 1;
-    } else {
-      break;
-    }
-  }
-  return streak;
-}
-
-function computeMilestones(sortedEntries) {
-  if (sortedEntries.length < 2) return [];
-  const first = sortedEntries[0].weight_kg;
-  const latest = sortedEntries[sortedEntries.length - 1].weight_kg;
-  const loss = Math.max(0, first - latest);
-  const milestones = [
-    { label: "1kg", target: 1 },
-    { label: "5kg", target: 5 },
-    { label: "10kg", target: 10 },
-  ];
-  return milestones.map((m) => ({ ...m, achieved: loss >= m.target, delta: Math.max(0, m.target - loss) }));
 }
 
 function calculateBmr({ weight, height, age, sex }) {
@@ -64,6 +34,10 @@ function calculateBmr({ weight, height, age, sex }) {
   return Math.round(sex === "male" ? base + 5 : base - 161);
 }
 
+function formatDayLabel(dateString) {
+  return new Date(dateString).toLocaleDateString(undefined, { weekday: "short" });
+}
+
 export default function DashboardPage() {
   const { t } = useTranslation();
   const { pushToast } = useToast();
@@ -73,21 +47,18 @@ export default function DashboardPage() {
   const [weightKg, setWeightKg] = useState("");
   const [saving, setSaving] = useState(false);
   const [deletingDate, setDeletingDate] = useState(null);
-  const [chartRange, setChartRange] = useState("month");
   const [historyRange, setHistoryRange] = useState("all");
   const [posts, setPosts] = useState([]);
   const [bmrInputs, setBmrInputs] = useState(DEFAULT_BMR_INPUTS);
   const [bmrValue, setBmrValue] = useState(null);
   const [bmrHydrated, setBmrHydrated] = useState(false);
+  const [showBmrForm, setShowBmrForm] = useState(false);
   const bmrNotifiedRef = useRef(false);
+  const weightFormRef = useRef(null);
 
   const sortedEntries = useMemo(
     () => [...entries].sort((a, b) => a.entry_date.localeCompare(b.entry_date)),
     [entries]
-  );
-  const filteredForChart = useMemo(
-    () => filterByDays(sortedEntries, RANGE_FILTERS[chartRange]),
-    [sortedEntries, chartRange]
   );
   const filteredHistory = useMemo(
     () => filterByDays(sortedEntries, RANGE_FILTERS[historyRange]),
@@ -95,10 +66,29 @@ export default function DashboardPage() {
   );
 
   const latest = sortedEntries[sortedEntries.length - 1];
-  const previous = sortedEntries[sortedEntries.length - 2];
-  const oneWeekAgo = filterByDays(sortedEntries, 7)[0];
-  const streak = computeStreak(sortedEntries);
-  const milestones = computeMilestones(sortedEntries);
+  const weeklyEntries = sortedEntries.slice(-7);
+  const todaysIntake = 420;
+  const weeklyBars =
+    weeklyEntries.length > 0
+      ? weeklyEntries.map((entry) => ({
+          label: formatDayLabel(entry.entry_date),
+          value: entry.weight_kg
+        }))
+      : [
+          { label: "Mon", value: 74.2 },
+          { label: "Tue", value: 74.1 },
+          { label: "Wed", value: 74.0 },
+          { label: "Thu", value: 74.2 },
+          { label: "Fri", value: 74.4 },
+          { label: "Sat", value: 74.2 },
+          { label: "Sun", value: 74.2 }
+        ];
+  const maxBar = Math.max(...weeklyBars.map((b) => b.value));
+  const minBar = Math.min(...weeklyBars.map((b) => b.value));
+  const barRange = maxBar - minBar || 1;
+  const greetingName = user?.username ? user.username.replace(/^\w/, (c) => c.toUpperCase()) : "Julian";
+  const metabolicRemaining = bmrValue ? Math.max(0, bmrValue - todaysIntake) : null;
+  const bmrPercent = bmrValue ? Math.min(100, Math.round((todaysIntake / bmrValue) * 100)) : 0;
 
   useEffect(() => {
     async function fetchPosts() {
@@ -145,6 +135,13 @@ export default function DashboardPage() {
     }
   }, [bmrValue, bmrHydrated, pushToast, t, user]);
 
+  const handleLogFood = () => {
+    pushToast(t("dashboard.logFoodPlaceholder"), "info");
+  };
+
+  const handleScrollToWeight = () => {
+    weightFormRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -221,67 +218,135 @@ export default function DashboardPage() {
 
   return (
     <section className="space-y-6 rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-sm uppercase tracking-wide text-onSurfaceVariant">{t("dashboard.subtitle")}</p>
-          <h1 className="font-display text-3xl font-bold text-onSurface">{t("dashboard.title")}</h1>
-          <p className="text-onSurfaceVariant">{t("dashboard.tagline")}</p>
+          <p className="text-xs uppercase tracking-wide text-onSurfaceVariant">Vitals Overview</p>
+          <h1 className="font-display text-3xl font-bold text-onSurface">Morning, {greetingName}</h1>
+          <p className="text-onSurfaceVariant">Your metabolic rhythm is performing 12% above baseline today.</p>
         </div>
-        <Link
-          to="/community"
-          className="hidden gradient-primary rounded-full px-4 py-2 text-sm font-semibold text-white shadow-floating md:inline-flex"
-        >
-          🤝 {t("dashboard.viewCommunity")}
-        </Link>
-      </div>
-
-      <div className="grid gap-3 md:grid-cols-5">
-        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.currentWeight")}</p>
-          <p className="mt-2 text-3xl font-bold text-onSurface">{latest ? `${latest.weight_kg} kg` : "—"}</p>
-          <p className="text-sm text-onSurfaceVariant">
-            {previous && latest
-              ? `${latest.weight_kg - previous.weight_kg > 0 ? "+" : ""}${(latest.weight_kg - previous.weight_kg).toFixed(1)} kg ${t("dashboard.sinceLast")}`
-              : t("dashboard.noPrevious")}
-          </p>
-        </div>
-        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.weeklyChange")}</p>
-          <p className="mt-2 text-2xl font-bold text-onSurface">
-            {latest && oneWeekAgo
-              ? `${(latest.weight_kg - oneWeekAgo.weight_kg).toFixed(1)} kg`
-              : "—"}
-          </p>
-          <p className="text-sm text-onSurfaceVariant">{t("dashboard.weeklyCopy")}</p>
-        </div>
-        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.streak")}</p>
-          <p className="mt-2 text-2xl font-bold text-onSurface">{streak}🔥</p>
-          <p className="text-sm text-onSurfaceVariant">{t("dashboard.streakCopy")}</p>
-        </div>
-        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.entries")}</p>
-          <p className="mt-2 text-2xl font-bold text-onSurface">{sortedEntries.length}</p>
-          <p className="text-sm text-onSurfaceVariant">{t("dashboard.entriesCopy")}</p>
-        </div>
-        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.bmrLabel")}</p>
-          <p className="mt-2 text-3xl font-bold text-onSurface">{bmrValue ? `${bmrValue} kcal` : "—"}</p>
-          <p className="text-sm text-onSurfaceVariant">
-            {bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissingShort")}
-          </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={handleLogFood}
+            className="rounded-full bg-surfaceContainerLowest px-4 py-2 text-sm font-semibold text-onSurface shadow-inner ring-1 ring-outlineVariant transition hover:shadow-floating"
+          >
+            + Log Food
+          </button>
+          <button
+            type="button"
+            onClick={handleScrollToWeight}
+            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-floating transition hover:-translate-y-0.5"
+          >
+            Update Weight
+          </button>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-[1.2fr_1fr]">
-        <form className="rounded-cozy bg-surfaceContainerHigh p-4 shadow-playful" onSubmit={handleSubmit}>
-          <div className="flex items-center justify-between">
+      <div className="grid gap-4 lg:grid-cols-[1.4fr_0.9fr]">
+        <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-onSurface">Metabolic Balance</p>
+              <p className="text-xs text-onSurfaceVariant">BMR vs. Daily Caloric Intake</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-onSurfaceVariant">kcal remaining</p>
+              <p className="text-2xl font-bold text-primary">{metabolicRemaining !== null ? metabolicRemaining : "—"}</p>
+            </div>
+          </div>
+          <div className="mt-4 space-y-4">
+            <div>
+              <div className="flex items-center justify-between text-xs font-semibold text-onSurfaceVariant">
+                <span>Basal Metabolic Rate (BMR)</span>
+                <span>{bmrValue ? `${bmrValue} kcal` : "—"}</span>
+              </div>
+              <div className="mt-2 h-3 rounded-full bg-surfaceContainerHigh">
+                <div className="h-3 rounded-full bg-primary" style={{ width: "100%" }} />
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center justify-between text-xs font-semibold text-onSurfaceVariant">
+                <span>Today's Intake</span>
+                <span>{todaysIntake} kcal</span>
+              </div>
+              <div className="mt-2 h-3 rounded-full bg-surfaceContainerHigh">
+                <div className="h-3 rounded-full bg-primaryFixed" style={{ width: `${Math.max(18, bmrPercent)}%` }} />
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 flex gap-5 text-xs font-semibold text-onSurfaceVariant">
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full bg-primary" />
+              BMR Energy
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full bg-primaryFixed" />
+              Consumption
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-cozy bg-primary p-5 text-white shadow-playful">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase opacity-80">Weekly Trend</p>
+              <h3 className="text-xl font-semibold">Weight Plateau</h3>
+              <p className="text-sm opacity-80">You’ve maintained a steady weight for 5 days. Consistency is key.</p>
+            </div>
+            <div className="rounded-full bg-white/15 px-3 py-1 text-sm font-semibold">
+              {latest ? `${latest.weight_kg} kg` : "—"}
+            </div>
+          </div>
+          <div className="mt-5 flex items-end gap-2">
+            {weeklyBars.map((bar) => {
+              const height = 38 + ((bar.value - minBar) / barRange) * 70;
+              return (
+                <div key={bar.label} className="flex flex-col items-center gap-2 text-xs font-semibold">
+                  <div
+                    className="w-7 rounded-xl bg-white/20 backdrop-blur-sm"
+                    style={{ height }}
+                    title={`${bar.value} kg`}
+                  >
+                    <div className="h-full w-full rounded-xl bg-white/80 mix-blend-screen" />
+                  </div>
+                  <span className="uppercase opacity-90">{bar.label.slice(0, 3)}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-3">
+        {[
+          { label: "Hydration", value: "1.4 / 2.5L", color: "bg-primaryFixed", icon: "💧" },
+          { label: "Movement", value: "8,420 steps", color: "bg-primary", icon: "🦶" },
+          { label: "Sleep Quality", value: "7h 20m • Deep", color: "bg-primaryContainer", icon: "🌙" }
+        ].map((metric) => (
+          <div key={metric.label} className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful ring-1 ring-outlineVariant/60">
+            <div className="flex items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-surfaceContainerHigh text-lg">{metric.icon}</span>
+              <div>
+                <p className="text-sm font-semibold text-onSurface">{metric.label}</p>
+                <p className="text-xs text-onSurfaceVariant">{metric.value}</p>
+              </div>
+            </div>
+            <div className="mt-3 h-2 rounded-full bg-surfaceContainerHigh">
+              <div className={`h-2 rounded-full ${metric.color}`} style={{ width: "68%" }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]" ref={weightFormRef}>
+        <form className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60" onSubmit={handleSubmit}>
+          <div className="flex items-center justify-between gap-3">
             <h2 className="font-display text-xl text-onSurface">{t("dashboard.quickLog")}</h2>
-            <span className="rounded-full bg-surfaceContainerLowest px-3 py-1 text-xs font-semibold text-onSurfaceVariant shadow-playful">
+            <span className="rounded-full bg-surfaceContainerLow px-3 py-1 text-xs font-semibold text-onSurfaceVariant shadow-inner">
               {t("dashboard.today")} {new Date().toLocaleDateString()}
             </span>
           </div>
-          <div className="mt-3 grid gap-3 md:grid-cols-3 md:items-end">
+          <div className="mt-4 grid gap-3 md:grid-cols-3 md:items-end">
             <label className="flex flex-col gap-1 text-sm font-semibold">
               {t("dashboard.date")}
               <input
@@ -308,164 +373,107 @@ export default function DashboardPage() {
             <button
               type="submit"
               disabled={saving}
-              className="mt-1 gradient-primary rounded-full px-4 py-3 font-semibold text-white shadow-floating transition hover:opacity-90 disabled:opacity-60 md:mt-0"
+              className="mt-1 rounded-full bg-primary px-4 py-3 font-semibold text-white shadow-floating transition hover:-translate-y-0.5 disabled:opacity-60 md:mt-0"
             >
               {saving ? t("common.loading") : t("dashboard.logToday")}
             </button>
           </div>
         </form>
 
-        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-          <div className="flex items-center justify-between">
-            <h3 className="font-display text-lg text-onSurface">{t("dashboard.milestones")}</h3>
-            <span className="rounded-full bg-secondaryContainer px-3 py-1 text-xs font-semibold text-onSecondaryContainer shadow-playful">
-              {t("dashboard.auto")}
-            </span>
-          </div>
-          <ul className="mt-3 space-y-2">
-            {milestones.length === 0 && (
-              <li className="rounded-soft bg-surfaceContainerLow px-3 py-2 text-sm text-onSurfaceVariant">{t("dashboard.milestonesEmpty")}</li>
-            )}
-            {milestones.map((m) => (
-              <li
-                key={m.label}
-                className={`flex items-center justify-between rounded-soft px-3 py-2 text-sm font-semibold ${
-                  m.achieved ? "bg-primaryFixed/90 text-onSurface" : "bg-surfaceContainerLow text-onSurfaceVariant"
-                }`}
-              >
-                <span>
-                  🎯 {t("dashboard.milestoneLabel", { amount: m.label })}
-                </span>
-                <span>{m.achieved ? t("dashboard.achieved") : t("dashboard.remaining", { amount: m.delta.toFixed(1) })}</span>
-              </li>
-            ))}
-            <li
-              className={`flex items-center justify-between rounded-soft px-3 py-2 text-sm font-semibold ${
-                streak >= 7 ? "bg-primaryFixed/90 text-onSurface" : "bg-surfaceContainerLow text-onSurfaceVariant"
-              }`}
-            >
-              <span>🔥 {t("dashboard.streakMilestone")}</span>
-              <span>{streak >= 7 ? t("dashboard.achieved") : t("dashboard.remaining", { amount: Math.max(0, 7 - streak) })}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.bmrLabel")}</p>
-            <h2 className="font-display text-xl text-onSurface">{t("dashboard.bmrHeadline")}</h2>
-            <p className="text-sm text-onSurfaceVariant">{bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissing")}</p>
-          </div>
-          <div className="rounded-full bg-secondaryContainer px-4 py-2 text-sm font-semibold text-onSecondaryContainer shadow-playful">
-            {bmrValue ? `${bmrValue} kcal` : t("dashboard.bmrEmptyPill")}
-          </div>
-        </div>
-        {!bmrValue && (
-          <div className="mt-3 flex items-start gap-2 rounded-soft bg-surfaceContainerLow px-3 py-2 text-sm text-onSurface">
-            <span>🔔</span>
-            <p>{t("dashboard.bmrPrompt")}</p>
-          </div>
-        )}
-        <form className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4" onSubmit={handleBmrSubmit}>
-          <label className="flex flex-col gap-1 text-sm font-semibold">
-            {t("dashboard.bmrSex")}
-            <select
-              className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
-              value={bmrInputs.sex}
-              onChange={handleBmrInputChange("sex")}
-            >
-              <option value="female">{t("dashboard.bmrFemale")}</option>
-              <option value="male">{t("dashboard.bmrMale")}</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-sm font-semibold">
-            {t("dashboard.bmrAge")}
-            <input
-              className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
-              type="number"
-              min="10"
-              max="120"
-              value={bmrInputs.age}
-              onChange={handleBmrInputChange("age")}
-              placeholder="30"
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-sm font-semibold">
-            {t("dashboard.bmrHeight")}
-            <input
-              className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
-              type="number"
-              min="100"
-              max="250"
-              value={bmrInputs.height}
-              onChange={handleBmrInputChange("height")}
-              placeholder="170"
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-sm font-semibold">
-            {t("dashboard.bmrWeight")}
-            <div className="flex gap-2">
-              <input
-                className="w-full rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
-                type="number"
-                min="20"
-                max="300"
-                step="0.1"
-                value={bmrInputs.weight}
-                onChange={handleBmrInputChange("weight")}
-                placeholder="70.5"
-              />
-              <button
-                type="button"
-                onClick={useLatestWeight}
-                className="whitespace-nowrap rounded-full bg-secondaryContainer px-3 py-2 text-xs font-semibold text-onSecondaryContainer shadow-playful hover:shadow-floating"
-              >
-                {t("dashboard.useLatest")}
-              </button>
+        <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
+          <div className="flex items-center justify-between gap-2">
+            <div>
+              <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.bmrLabel")}</p>
+              <p className="text-lg font-semibold text-onSurface">{t("dashboard.bmrHeadline")}</p>
+              <p className="text-sm text-onSurfaceVariant">
+                {bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissingShort")}
+              </p>
             </div>
-          </label>
-          <div className="md:col-span-2 lg:col-span-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-onSurfaceVariant">{t("dashboard.bmrHelp")}</p>
-            <button
-              type="submit"
-              className="gradient-primary rounded-full px-4 py-3 text-sm font-semibold text-white shadow-floating transition hover:opacity-90"
-            >
-              {t("dashboard.bmrCalculate")}
-            </button>
+            <div className="rounded-full bg-primaryFixed px-3 py-1 text-sm font-semibold text-onSurface shadow-inner">
+              {bmrValue ? `${bmrValue} kcal` : t("dashboard.bmrEmptyPill")}
+            </div>
           </div>
-        </form>
+          <button
+            type="button"
+            onClick={() => setShowBmrForm((prev) => !prev)}
+            className="mt-3 text-sm font-semibold text-primary underline-offset-4 hover:underline"
+          >
+            {showBmrForm ? t("common.cancel") : t("dashboard.bmrCalculate")}
+          </button>
+          {showBmrForm && (
+            <form className="mt-3 grid gap-3 md:grid-cols-2" onSubmit={handleBmrSubmit}>
+              <label className="flex flex-col gap-1 text-sm font-semibold">
+                {t("dashboard.bmrSex")}
+                <select
+                  className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
+                  value={bmrInputs.sex}
+                  onChange={handleBmrInputChange("sex")}
+                >
+                  <option value="female">{t("dashboard.bmrFemale")}</option>
+                  <option value="male">{t("dashboard.bmrMale")}</option>
+                </select>
+              </label>
+              <label className="flex flex-col gap-1 text-sm font-semibold">
+                {t("dashboard.bmrAge")}
+                <input
+                  className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
+                  type="number"
+                  min="10"
+                  max="120"
+                  value={bmrInputs.age}
+                  onChange={handleBmrInputChange("age")}
+                  placeholder="30"
+                />
+              </label>
+              <label className="flex flex-col gap-1 text-sm font-semibold">
+                {t("dashboard.bmrHeight")}
+                <input
+                  className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
+                  type="number"
+                  min="100"
+                  max="250"
+                  value={bmrInputs.height}
+                  onChange={handleBmrInputChange("height")}
+                  placeholder="170"
+                />
+              </label>
+              <label className="flex flex-col gap-1 text-sm font-semibold">
+                {t("dashboard.bmrWeight")}
+                <div className="flex gap-2">
+                  <input
+                    className="w-full rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
+                    type="number"
+                    min="20"
+                    max="300"
+                    step="0.1"
+                    value={bmrInputs.weight}
+                    onChange={handleBmrInputChange("weight")}
+                    placeholder="70.5"
+                  />
+                  <button
+                    type="button"
+                    onClick={useLatestWeight}
+                    className="whitespace-nowrap rounded-full bg-surfaceContainerLow px-3 py-2 text-xs font-semibold text-onSurface shadow-inner hover:shadow-floating"
+                  >
+                    {t("dashboard.useLatest")}
+                  </button>
+                </div>
+              </label>
+              <div className="md:col-span-2 flex items-center justify-between gap-3">
+                <p className="text-sm text-onSurfaceVariant">{t("dashboard.bmrHelp")}</p>
+                <button
+                  type="submit"
+                  className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-floating transition hover:-translate-y-0.5"
+                >
+                  {t("dashboard.bmrCalculate")}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
       </div>
 
-      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-xl text-onSurface">{t("dashboard.trend")}</h2>
-          <div className="flex gap-2 text-xs font-semibold">
-            {["week", "month", "year", "all"].map((range) => (
-              <button
-                key={range}
-                type="button"
-                onClick={() => setChartRange(range)}
-                className={`rounded-full px-3 py-1 ${
-                  chartRange === range ? "bg-primary text-white" : "bg-surfaceContainerLow text-onSurface"
-                }`}
-              >
-                {t(`dashboard.range.${range}`)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="mt-3">
-          <WeightChart
-            entries={filteredForChart}
-            xAxisLabel={t("dashboard.axisDate")}
-            yAxisLabel={t("dashboard.axisWeightKg")}
-          />
-        </div>
-      </div>
-
-      <div className="rounded-cozy bg-surfaceContainerLow p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-xl text-onSurface">{t("dashboard.history")}</h2>
           <div className="flex gap-2 text-xs font-semibold">
@@ -475,7 +483,7 @@ export default function DashboardPage() {
                 type="button"
                 onClick={() => setHistoryRange(range)}
                 className={`rounded-full px-3 py-1 ${
-                  historyRange === range ? "bg-primary text-white" : "bg-surfaceContainerLowest text-onSurface"
+                  historyRange === range ? "bg-primary text-white" : "bg-surfaceContainerLow text-onSurface"
                 }`}
               >
                 {t(`dashboard.range.${range}`)}
@@ -490,16 +498,16 @@ export default function DashboardPage() {
             {filteredHistory.map((entry) => (
               <li
                 key={entry.entry_date}
-                className="flex items-center justify-between rounded-soft bg-surfaceContainerLowest px-3 py-2 shadow-playful"
+                className="flex items-center justify-between rounded-soft bg-surfaceContainerLow px-3 py-2 shadow-inner"
               >
-                <span>{entry.entry_date}</span>
+                <span className="text-onSurfaceVariant">{entry.entry_date}</span>
                 <div className="flex items-center gap-3">
                   <span className="font-semibold">{entry.weight_kg} kg</span>
                   <button
                     type="button"
                     onClick={() => handleDelete(entry.entry_date)}
                     disabled={deletingDate === entry.entry_date}
-                    className="rounded-full bg-secondaryContainer px-3 py-1 text-sm font-semibold text-onSecondaryContainer shadow-playful hover:shadow-floating disabled:opacity-60"
+                    className="rounded-full bg-surfaceContainerHigh px-3 py-1 text-sm font-semibold text-onSurface shadow-playful hover:shadow-floating disabled:opacity-60"
                   >
                     {deletingDate === entry.entry_date ? t("common.loading") : t("common.delete")}
                   </button>
@@ -510,7 +518,7 @@ export default function DashboardPage() {
         )}
       </div>
 
-      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.communityLabel")}</p>
@@ -520,7 +528,7 @@ export default function DashboardPage() {
           <Link
             to="/posts/new"
             state={{ title: t("dashboard.prefillTitle"), content: t("dashboard.prefillContent") }}
-            className="gradient-primary rounded-full px-4 py-2 text-sm font-semibold text-white shadow-floating"
+            className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-floating"
           >
             ➕ {t("dashboard.quickPost")}
           </Link>

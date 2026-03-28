@@ -7,6 +7,7 @@ export default {
         primary: "var(--color-primary)",
         primaryContainer: "var(--color-primary-container)",
         primaryFixed: "var(--color-primary-fixed)",
+        accent: "var(--color-accent)",
         secondaryContainer: "var(--color-secondary-container)",
         onSecondaryContainer: "var(--color-on-secondary-container)",
         onSurface: "var(--color-on-surface)",
@@ -20,13 +21,13 @@ export default {
         surfaceDim: "var(--color-surface-dim)"
       },
       fontFamily: {
-        display: ["Manrope", "Plus Jakarta Sans", "sans-serif"],
-        body: ["Plus Jakarta Sans", "Manrope", "sans-serif"]
+        display: ["Sora", "Inter", "sans-serif"],
+        body: ["Inter", "Sora", "sans-serif"]
       },
       boxShadow: {
-        playful: "0 10px 20px rgba(35, 49, 66, 0.12)",
-        ambient: "0 32px 64px rgba(15, 82, 56, 0.08)",
-        floating: "0 12px 28px rgba(15, 82, 56, 0.12)"
+        playful: "0 14px 32px rgba(15, 91, 58, 0.12)",
+        ambient: "0 28px 64px rgba(10, 54, 36, 0.10)",
+        floating: "0 16px 32px rgba(15, 91, 58, 0.16)"
       },
       keyframes: {
         wiggle: {
@@ -39,7 +40,7 @@ export default {
       },
       borderRadius: {
         soft: "14px",
-        cozy: "18px"
+        cozy: "20px"
       },
       spacing: {
         4.5: "1.125rem",
