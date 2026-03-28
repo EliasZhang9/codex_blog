@@ -220,64 +220,64 @@ export default function DashboardPage() {
   }
 
   return (
-    <section className="space-y-5 rounded-3xl bg-white/90 p-5 shadow-playful">
+    <section className="space-y-6 rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-sm uppercase tracking-wide text-ink/60">{t("dashboard.subtitle")}</p>
-          <h1 className="font-display text-3xl font-bold">{t("dashboard.title")}</h1>
-          <p className="text-ink/70">{t("dashboard.tagline")}</p>
+          <p className="text-sm uppercase tracking-wide text-onSurfaceVariant">{t("dashboard.subtitle")}</p>
+          <h1 className="font-display text-3xl font-bold text-onSurface">{t("dashboard.title")}</h1>
+          <p className="text-onSurfaceVariant">{t("dashboard.tagline")}</p>
         </div>
         <Link
           to="/community"
-          className="hidden rounded-full bg-mint px-4 py-2 text-sm font-semibold text-ink shadow-playful md:inline-flex"
+          className="hidden gradient-primary rounded-full px-4 py-2 text-sm font-semibold text-white shadow-floating md:inline-flex"
         >
           🤝 {t("dashboard.viewCommunity")}
         </Link>
       </div>
 
       <div className="grid gap-3 md:grid-cols-5">
-        <div className="rounded-cozy bg-white p-4 shadow-playful">
-          <p className="text-xs uppercase text-ink/60">{t("dashboard.currentWeight")}</p>
-          <p className="mt-2 text-3xl font-bold">{latest ? `${latest.weight_kg} kg` : "—"}</p>
-          <p className="text-sm text-ink/70">
+        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.currentWeight")}</p>
+          <p className="mt-2 text-3xl font-bold text-onSurface">{latest ? `${latest.weight_kg} kg` : "—"}</p>
+          <p className="text-sm text-onSurfaceVariant">
             {previous && latest
               ? `${latest.weight_kg - previous.weight_kg > 0 ? "+" : ""}${(latest.weight_kg - previous.weight_kg).toFixed(1)} kg ${t("dashboard.sinceLast")}`
               : t("dashboard.noPrevious")}
           </p>
         </div>
-        <div className="rounded-cozy bg-white p-4 shadow-playful">
-          <p className="text-xs uppercase text-ink/60">{t("dashboard.weeklyChange")}</p>
-          <p className="mt-2 text-2xl font-bold">
+        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.weeklyChange")}</p>
+          <p className="mt-2 text-2xl font-bold text-onSurface">
             {latest && oneWeekAgo
               ? `${(latest.weight_kg - oneWeekAgo.weight_kg).toFixed(1)} kg`
               : "—"}
           </p>
-          <p className="text-sm text-ink/70">{t("dashboard.weeklyCopy")}</p>
+          <p className="text-sm text-onSurfaceVariant">{t("dashboard.weeklyCopy")}</p>
         </div>
-        <div className="rounded-cozy bg-white p-4 shadow-playful">
-          <p className="text-xs uppercase text-ink/60">{t("dashboard.streak")}</p>
-          <p className="mt-2 text-2xl font-bold">{streak}🔥</p>
-          <p className="text-sm text-ink/70">{t("dashboard.streakCopy")}</p>
+        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.streak")}</p>
+          <p className="mt-2 text-2xl font-bold text-onSurface">{streak}🔥</p>
+          <p className="text-sm text-onSurfaceVariant">{t("dashboard.streakCopy")}</p>
         </div>
-        <div className="rounded-cozy bg-white p-4 shadow-playful">
-          <p className="text-xs uppercase text-ink/60">{t("dashboard.entries")}</p>
-          <p className="mt-2 text-2xl font-bold">{sortedEntries.length}</p>
-          <p className="text-sm text-ink/70">{t("dashboard.entriesCopy")}</p>
+        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.entries")}</p>
+          <p className="mt-2 text-2xl font-bold text-onSurface">{sortedEntries.length}</p>
+          <p className="text-sm text-onSurfaceVariant">{t("dashboard.entriesCopy")}</p>
         </div>
-        <div className="rounded-cozy bg-white p-4 shadow-playful">
-          <p className="text-xs uppercase text-ink/60">{t("dashboard.bmrLabel")}</p>
-          <p className="mt-2 text-3xl font-bold">{bmrValue ? `${bmrValue} kcal` : "—"}</p>
-          <p className="text-sm text-ink/70">
+        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+          <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.bmrLabel")}</p>
+          <p className="mt-2 text-3xl font-bold text-onSurface">{bmrValue ? `${bmrValue} kcal` : "—"}</p>
+          <p className="text-sm text-onSurfaceVariant">
             {bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissingShort")}
           </p>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-[1.2fr_1fr]">
-        <form className="rounded-cozy bg-sky/40 p-4 shadow-playful" onSubmit={handleSubmit}>
+        <form className="rounded-cozy bg-surfaceContainerHigh p-4 shadow-playful" onSubmit={handleSubmit}>
           <div className="flex items-center justify-between">
-            <h2 className="font-display text-xl">{t("dashboard.quickLog")}</h2>
-            <span className="rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-ink/80">
+            <h2 className="font-display text-xl text-onSurface">{t("dashboard.quickLog")}</h2>
+            <span className="rounded-full bg-surfaceContainerLowest px-3 py-1 text-xs font-semibold text-onSurfaceVariant shadow-playful">
               {t("dashboard.today")} {new Date().toLocaleDateString()}
             </span>
           </div>
@@ -285,7 +285,7 @@ export default function DashboardPage() {
             <label className="flex flex-col gap-1 text-sm font-semibold">
               {t("dashboard.date")}
               <input
-                className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+                className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
                 type="date"
                 value={entryDate}
                 onChange={(event) => setEntryDate(event.target.value)}
@@ -295,7 +295,7 @@ export default function DashboardPage() {
             <label className="flex flex-col gap-1 text-sm font-semibold">
               {t("dashboard.weightKg")}
               <input
-                className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+                className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
                 type="number"
                 step="0.1"
                 min="0.1"
@@ -308,29 +308,29 @@ export default function DashboardPage() {
             <button
               type="submit"
               disabled={saving}
-              className="mt-1 rounded-full bg-ink px-4 py-3 font-semibold text-white shadow-playful transition hover:opacity-90 disabled:opacity-60 md:mt-0"
+              className="mt-1 gradient-primary rounded-full px-4 py-3 font-semibold text-white shadow-floating transition hover:opacity-90 disabled:opacity-60 md:mt-0"
             >
               {saving ? t("common.loading") : t("dashboard.logToday")}
             </button>
           </div>
         </form>
 
-        <div className="rounded-cozy bg-white p-4 shadow-playful">
+        <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
           <div className="flex items-center justify-between">
-            <h3 className="font-display text-lg">{t("dashboard.milestones")}</h3>
-            <span className="rounded-full bg-mint px-3 py-1 text-xs font-semibold text-ink/80">
+            <h3 className="font-display text-lg text-onSurface">{t("dashboard.milestones")}</h3>
+            <span className="rounded-full bg-secondaryContainer px-3 py-1 text-xs font-semibold text-onSecondaryContainer shadow-playful">
               {t("dashboard.auto")}
             </span>
           </div>
           <ul className="mt-3 space-y-2">
             {milestones.length === 0 && (
-              <li className="rounded-soft bg-sky/30 px-3 py-2 text-sm text-ink/70">{t("dashboard.milestonesEmpty")}</li>
+              <li className="rounded-soft bg-surfaceContainerLow px-3 py-2 text-sm text-onSurfaceVariant">{t("dashboard.milestonesEmpty")}</li>
             )}
             {milestones.map((m) => (
               <li
                 key={m.label}
                 className={`flex items-center justify-between rounded-soft px-3 py-2 text-sm font-semibold ${
-                  m.achieved ? "bg-mint/70 text-ink" : "bg-banana/40 text-ink/80"
+                  m.achieved ? "bg-primaryFixed/90 text-onSurface" : "bg-surfaceContainerLow text-onSurfaceVariant"
                 }`}
               >
                 <span>
@@ -341,7 +341,7 @@ export default function DashboardPage() {
             ))}
             <li
               className={`flex items-center justify-between rounded-soft px-3 py-2 text-sm font-semibold ${
-                streak >= 7 ? "bg-mint/70 text-ink" : "bg-banana/40 text-ink/80"
+                streak >= 7 ? "bg-primaryFixed/90 text-onSurface" : "bg-surfaceContainerLow text-onSurfaceVariant"
               }`}
             >
               <span>🔥 {t("dashboard.streakMilestone")}</span>
@@ -351,19 +351,19 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="rounded-cozy bg-white p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-xs uppercase text-ink/60">{t("dashboard.bmrLabel")}</p>
-            <h2 className="font-display text-xl">{t("dashboard.bmrHeadline")}</h2>
-            <p className="text-sm text-ink/70">{bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissing")}</p>
+            <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.bmrLabel")}</p>
+            <h2 className="font-display text-xl text-onSurface">{t("dashboard.bmrHeadline")}</h2>
+            <p className="text-sm text-onSurfaceVariant">{bmrValue ? t("dashboard.bmrCopy") : t("dashboard.bmrMissing")}</p>
           </div>
-          <div className="rounded-full bg-sky/50 px-4 py-2 text-sm font-semibold text-ink">
+          <div className="rounded-full bg-secondaryContainer px-4 py-2 text-sm font-semibold text-onSecondaryContainer shadow-playful">
             {bmrValue ? `${bmrValue} kcal` : t("dashboard.bmrEmptyPill")}
           </div>
         </div>
         {!bmrValue && (
-          <div className="mt-3 flex items-start gap-2 rounded-soft bg-banana/40 px-3 py-2 text-sm text-ink">
+          <div className="mt-3 flex items-start gap-2 rounded-soft bg-surfaceContainerLow px-3 py-2 text-sm text-onSurface">
             <span>🔔</span>
             <p>{t("dashboard.bmrPrompt")}</p>
           </div>
@@ -372,7 +372,7 @@ export default function DashboardPage() {
           <label className="flex flex-col gap-1 text-sm font-semibold">
             {t("dashboard.bmrSex")}
             <select
-              className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+              className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
               value={bmrInputs.sex}
               onChange={handleBmrInputChange("sex")}
             >
@@ -383,7 +383,7 @@ export default function DashboardPage() {
           <label className="flex flex-col gap-1 text-sm font-semibold">
             {t("dashboard.bmrAge")}
             <input
-              className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+              className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
               type="number"
               min="10"
               max="120"
@@ -395,7 +395,7 @@ export default function DashboardPage() {
           <label className="flex flex-col gap-1 text-sm font-semibold">
             {t("dashboard.bmrHeight")}
             <input
-              className="rounded-soft border border-ink/10 bg-white px-3 py-2"
+              className="rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
               type="number"
               min="100"
               max="250"
@@ -408,7 +408,7 @@ export default function DashboardPage() {
             {t("dashboard.bmrWeight")}
             <div className="flex gap-2">
               <input
-                className="w-full rounded-soft border border-ink/10 bg-white px-3 py-2"
+                className="w-full rounded-soft bg-surfaceContainerHigh px-3 py-2 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
                 type="number"
                 min="20"
                 max="300"
@@ -420,17 +420,17 @@ export default function DashboardPage() {
               <button
                 type="button"
                 onClick={useLatestWeight}
-                className="whitespace-nowrap rounded-full bg-sky/50 px-3 py-2 text-xs font-semibold text-ink shadow-playful hover:bg-sky/60"
+                className="whitespace-nowrap rounded-full bg-secondaryContainer px-3 py-2 text-xs font-semibold text-onSecondaryContainer shadow-playful hover:shadow-floating"
               >
                 {t("dashboard.useLatest")}
               </button>
             </div>
           </label>
           <div className="md:col-span-2 lg:col-span-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-ink/70">{t("dashboard.bmrHelp")}</p>
+            <p className="text-sm text-onSurfaceVariant">{t("dashboard.bmrHelp")}</p>
             <button
               type="submit"
-              className="rounded-full bg-ink px-4 py-3 text-sm font-semibold text-white shadow-playful transition hover:opacity-90"
+              className="gradient-primary rounded-full px-4 py-3 text-sm font-semibold text-white shadow-floating transition hover:opacity-90"
             >
               {t("dashboard.bmrCalculate")}
             </button>
@@ -438,9 +438,9 @@ export default function DashboardPage() {
         </form>
       </div>
 
-      <div className="rounded-cozy bg-white p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-xl">{t("dashboard.trend")}</h2>
+          <h2 className="font-display text-xl text-onSurface">{t("dashboard.trend")}</h2>
           <div className="flex gap-2 text-xs font-semibold">
             {["week", "month", "year", "all"].map((range) => (
               <button
@@ -448,7 +448,7 @@ export default function DashboardPage() {
                 type="button"
                 onClick={() => setChartRange(range)}
                 className={`rounded-full px-3 py-1 ${
-                  chartRange === range ? "bg-ink text-white" : "bg-sky/50 text-ink"
+                  chartRange === range ? "bg-primary text-white" : "bg-surfaceContainerLow text-onSurface"
                 }`}
               >
                 {t(`dashboard.range.${range}`)}
@@ -465,9 +465,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="rounded-cozy bg-banana/30 p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLow p-4 shadow-playful">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="font-display text-xl">{t("dashboard.history")}</h2>
+          <h2 className="font-display text-xl text-onSurface">{t("dashboard.history")}</h2>
           <div className="flex gap-2 text-xs font-semibold">
             {["all", "week", "month"].map((range) => (
               <button
@@ -475,7 +475,7 @@ export default function DashboardPage() {
                 type="button"
                 onClick={() => setHistoryRange(range)}
                 className={`rounded-full px-3 py-1 ${
-                  historyRange === range ? "bg-ink text-white" : "bg-white/80 text-ink"
+                  historyRange === range ? "bg-primary text-white" : "bg-surfaceContainerLowest text-onSurface"
                 }`}
               >
                 {t(`dashboard.range.${range}`)}
@@ -484,13 +484,13 @@ export default function DashboardPage() {
           </div>
         </div>
         {!filteredHistory.length ? (
-          <p className="mt-2 text-sm text-ink/70">{t("dashboard.empty")}</p>
+          <p className="mt-2 text-sm text-onSurfaceVariant">{t("dashboard.empty")}</p>
         ) : (
           <ul className="mt-3 space-y-2">
             {filteredHistory.map((entry) => (
               <li
                 key={entry.entry_date}
-                className="flex items-center justify-between rounded-soft bg-white/90 px-3 py-2"
+                className="flex items-center justify-between rounded-soft bg-surfaceContainerLowest px-3 py-2 shadow-playful"
               >
                 <span>{entry.entry_date}</span>
                 <div className="flex items-center gap-3">
@@ -499,7 +499,7 @@ export default function DashboardPage() {
                     type="button"
                     onClick={() => handleDelete(entry.entry_date)}
                     disabled={deletingDate === entry.entry_date}
-                    className="rounded-full bg-coral/30 px-3 py-1 text-sm font-semibold text-ink hover:bg-coral/40 disabled:opacity-60"
+                    className="rounded-full bg-secondaryContainer px-3 py-1 text-sm font-semibold text-onSecondaryContainer shadow-playful hover:shadow-floating disabled:opacity-60"
                   >
                     {deletingDate === entry.entry_date ? t("common.loading") : t("common.delete")}
                   </button>
@@ -510,24 +510,24 @@ export default function DashboardPage() {
         )}
       </div>
 
-      <div className="rounded-cozy bg-white p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase text-ink/60">{t("dashboard.communityLabel")}</p>
-            <h2 className="font-display text-xl">{t("dashboard.communityTitle")}</h2>
-            <p className="text-sm text-ink/70">{t("dashboard.communityCopy")}</p>
+            <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.communityLabel")}</p>
+            <h2 className="font-display text-xl text-onSurface">{t("dashboard.communityTitle")}</h2>
+            <p className="text-sm text-onSurfaceVariant">{t("dashboard.communityCopy")}</p>
           </div>
           <Link
             to="/posts/new"
             state={{ title: t("dashboard.prefillTitle"), content: t("dashboard.prefillContent") }}
-            className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white shadow-playful"
+            className="gradient-primary rounded-full px-4 py-2 text-sm font-semibold text-white shadow-floating"
           >
             ➕ {t("dashboard.quickPost")}
           </Link>
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           {posts.length === 0 ? (
-            <p className="text-sm text-ink/70">{t("dashboard.noPosts")}</p>
+            <p className="text-sm text-onSurfaceVariant">{t("dashboard.noPosts")}</p>
           ) : (
             posts.map((post) => <WellnessPostCard key={post.id} post={post} />)
           )}

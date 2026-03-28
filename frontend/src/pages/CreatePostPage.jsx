@@ -28,12 +28,26 @@ export default function CreatePostPage() {
   };
 
   return (
-    <section className="rounded-3xl bg-white/90 p-6 shadow-playful">
-      <h1 className="mb-4 font-display text-2xl">{t("post.create")}</h1>
+    <section className="rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
+      <h1 className="mb-4 font-display text-2xl text-onSurface">{t("post.create")}</h1>
       <form className="space-y-3" onSubmit={onSubmit}>
-        <input required className="w-full rounded-xl border p-3" placeholder={t("post.title")} value={form.title} onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))} />
-        <textarea required className="min-h-52 w-full rounded-xl border p-3" placeholder={t("post.placeholder1")} value={form.content} onChange={(event) => setForm((prev) => ({ ...prev, content: event.target.value }))} />
-        <button disabled={loading} type="submit" className="rounded-full bg-mint px-5 py-2 font-bold">{t("post.create")}</button>
+        <input
+          required
+          className="w-full rounded-xl bg-surfaceContainerHigh p-3 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
+          placeholder={t("post.title")}
+          value={form.title}
+          onChange={(event) => setForm((prev) => ({ ...prev, title: event.target.value }))}
+        />
+        <textarea
+          required
+          className="min-h-52 w-full rounded-xl bg-surfaceContainerHigh p-3 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40"
+          placeholder={t("post.placeholder1")}
+          value={form.content}
+          onChange={(event) => setForm((prev) => ({ ...prev, content: event.target.value }))}
+        />
+        <button disabled={loading} type="submit" className="gradient-primary rounded-full px-5 py-3 font-bold text-white shadow-floating">
+          {t("post.create")}
+        </button>
       </form>
     </section>
   );

@@ -17,9 +17,9 @@ import ProgressPage from "./pages/ProgressPage";
 
 export default function App() {
   return (
-    <div className="min-h-screen pb-20 md:pb-0">
+    <div className="min-h-screen bg-surface text-onSurface pb-24 md:pb-10">
       <Navbar />
-      <main className="mx-auto w-full max-w-6xl px-4 py-6">
+      <main className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />

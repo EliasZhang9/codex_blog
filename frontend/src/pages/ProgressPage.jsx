@@ -47,11 +47,11 @@ export default function ProgressPage() {
   }
 
   return (
-    <section className="space-y-5 rounded-3xl bg-white/90 p-5 shadow-playful">
+    <section className="space-y-5 rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm uppercase tracking-wide text-ink/60">{t("progress.subtitle")}</p>
-          <h1 className="font-display text-3xl font-bold">{t("progress.title")}</h1>
+          <p className="text-sm uppercase tracking-wide text-onSurfaceVariant">{t("progress.subtitle")}</p>
+          <h1 className="font-display text-3xl font-bold text-onSurface">{t("progress.title")}</h1>
         </div>
         <div className="flex gap-2 text-xs font-semibold">
           {["week", "month", "year", "all"].map((value) => (
@@ -59,7 +59,7 @@ export default function ProgressPage() {
               key={value}
               type="button"
               onClick={() => setRange(value)}
-              className={`rounded-full px-3 py-1 ${range === value ? "bg-ink text-white" : "bg-sky/60 text-ink"}`}
+              className={`rounded-full px-3 py-1 ${range === value ? "bg-primary text-white" : "bg-surfaceContainerLow text-onSurface"}`}
             >
               {t(`dashboard.range.${value}`)}
             </button>
@@ -67,7 +67,7 @@ export default function ProgressPage() {
         </div>
       </div>
 
-      <div className="rounded-cozy bg-white p-4 shadow-playful">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
         <WeightChart
           entries={filtered}
           xAxisLabel={t("dashboard.axisDate")}
@@ -75,17 +75,17 @@ export default function ProgressPage() {
         />
       </div>
 
-      <div className="rounded-cozy bg-mint/40 p-4 shadow-playful">
-        <h2 className="font-display text-xl">{t("dashboard.milestones")}</h2>
+      <div className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful">
+        <h2 className="font-display text-xl text-onSurface">{t("dashboard.milestones")}</h2>
         <ul className="mt-3 space-y-2">
           {milestones.length === 0 && (
-            <li className="rounded-soft bg-white/80 px-3 py-2 text-sm text-ink/80">{t("dashboard.milestonesEmpty")}</li>
+            <li className="rounded-soft bg-surfaceContainerLow px-3 py-2 text-sm text-onSurfaceVariant">{t("dashboard.milestonesEmpty")}</li>
           )}
           {milestones.map((m) => (
             <li
               key={m.label}
               className={`flex items-center justify-between rounded-soft px-3 py-2 text-sm font-semibold ${
-                m.achieved ? "bg-white/90 text-ink" : "bg-banana/50 text-ink/80"
+                m.achieved ? "bg-primaryFixed/90 text-onSurface" : "bg-surfaceContainerLow text-onSurfaceVariant"
               }`}
             >
               <span>🎯 {t("dashboard.milestoneLabel", { amount: m.label })}</span>

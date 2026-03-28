@@ -14,7 +14,9 @@ export default function NotificationToast() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.9 }}
             className={`rounded-2xl px-4 py-3 font-semibold shadow-playful ${
-              toast.type === "error" ? "bg-coral text-white" : "bg-mint text-ink"
+              toast.type === "error"
+                ? "bg-secondaryContainer text-onSecondaryContainer"
+                : "bg-primary text-white"
             }`}
           >
             {toast.message}
