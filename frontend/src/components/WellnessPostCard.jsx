@@ -11,10 +11,10 @@ const moodKeywords = [
 ];
 
 function deriveMood(content) {
-  if (!content) return { emoji: "🤝", label: "Support", color: "bg-sky/60" };
+  if (!content) return { emoji: "🤝", label: "Support", color: "bg-surfaceContainerLow text-onSurface" };
   const lower = content.toLowerCase();
   const found = moodKeywords.find((m) => lower.includes(m.key));
-  return found || { emoji: "🤝", label: "Support", color: "bg-sky/60" };
+  return found || { emoji: "🤝", label: "Support", color: "bg-surfaceContainerLow text-onSurface" };
 }
 
 export default function WellnessPostCard({ post }) {
