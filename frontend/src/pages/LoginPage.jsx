@@ -29,14 +29,14 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="mx-auto max-w-md rounded-3xl bg-white/90 p-6 shadow-playful">
-      <h1 className="mb-4 font-display text-2xl">{t("auth.welcome")}</h1>
+    <section className="mx-auto max-w-md rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
+      <h1 className="mb-4 font-display text-2xl text-onSurface">{t("auth.welcome")}</h1>
       <form className="space-y-3" onSubmit={onSubmit}>
-        <input required type="email" className="w-full rounded-xl border p-3" placeholder={t("auth.email")} value={form.email} onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))} />
-        <input required type="password" className="w-full rounded-xl border p-3" placeholder={t("auth.password")} value={form.password} onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))} />
-        <button disabled={loading} type="submit" className="w-full rounded-full bg-sky px-4 py-2 font-bold">{t("nav.login")}</button>
+        <input required type="email" className="w-full rounded-xl bg-surfaceContainerHigh p-3 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40" placeholder={t("auth.email")} value={form.email} onChange={(event) => setForm((prev) => ({ ...prev, email: event.target.value }))} />
+        <input required type="password" className="w-full rounded-xl bg-surfaceContainerHigh p-3 text-onSurface shadow-inner outline outline-1 outline-transparent focus:bg-surfaceContainerLowest focus:outline focus:outline-1 focus:outline-[color:var(--color-outline-variant)]/40" placeholder={t("auth.password")} value={form.password} onChange={(event) => setForm((prev) => ({ ...prev, password: event.target.value }))} />
+        <button disabled={loading} type="submit" className="w-full gradient-primary rounded-full px-4 py-3 font-bold text-white shadow-floating disabled:opacity-60">{t("nav.login")}</button>
       </form>
-      <p className="mt-4 text-sm">No account? <Link to="/register" className="font-bold text-grape">{t("nav.register")}</Link></p>
+      <p className="mt-4 text-sm text-onSurfaceVariant">No account? <Link to="/register" className="font-bold text-onSurface">{t("nav.register")}</Link></p>
     </section>
   );
 }

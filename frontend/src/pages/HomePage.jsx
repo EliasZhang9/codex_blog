@@ -42,16 +42,23 @@ export default function HomePage() {
   if (loading) return <p>{t("common.loading")}</p>;
 
   if (!posts.length) {
-    return <div className="rounded-3xl bg-white/80 p-8 text-center shadow-playful">{t("post.empty")}</div>;
+    return <div className="rounded-3xl bg-surfaceContainerLow p-10 text-center text-onSurfaceVariant shadow-playful">{t("post.empty")}</div>;
   }
 
   return (
-    <div className="grid gap-4">
-      {posts.map((post, index) => (
-        <motion.div key={post.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.06 }}>
-          <PostCard post={post} onReact={handleReact} />
-        </motion.div>
-      ))}
-    </div>
+    <section className="rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
+      <div className="grid gap-4">
+        {posts.map((post, index) => (
+          <motion.div
+            key={post.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06 }}
+          >
+            <PostCard post={post} onReact={handleReact} />
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 }

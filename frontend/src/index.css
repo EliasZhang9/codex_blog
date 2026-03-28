@@ -3,24 +3,58 @@
 @tailwind utilities;
 
 :root {
-  --banana: #ffe9a3;
-  --mint: #b9e8ce;
-  --sky: #b8d8ff;
-  --coral: #ffb38a;
-  --grape: #b7a8e3;
-  --ink: #1f2d3d;
+  --color-primary: #0f5238;
+  --color-primary-container: #2d6a4f;
+  --color-primary-fixed: #b1f0ce;
+  --color-secondary-container: #a3d8fe;
+  --color-on-secondary-container: #255f80;
+  --color-surface: #f8faf9;
+  --color-surface-container-low: #f2f4f3;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e6e9e8;
+  --color-surface-bright: #f8faf9b3;
+  --color-surface-dim: #d8dada;
+  --color-on-surface: #191c1c;
+  --color-on-surface-variant: #404943;
+  --color-outline-variant: #bfc9c1;
+}
+
+.dark {
+  --color-surface: #111816;
+  --color-surface-container-low: #16201c;
+  --color-surface-container-lowest: #1d2924;
+  --color-surface-container-high: #25322d;
+  --color-surface-bright: #1e2a25cc;
+  --color-surface-dim: #d8dada;
+  --color-on-surface: #e8efec;
+  --color-on-surface-variant: #c3c8c5;
+  --color-outline-variant: #6b756f;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Manrope", "Poppins", sans-serif;
-  color: var(--ink);
+  font-family: "Plus Jakarta Sans", "Manrope", sans-serif;
+  color: var(--color-on-surface);
   background:
-    radial-gradient(circle at 16% 18%, rgba(185, 232, 206, 0.5), transparent 32%),
-    radial-gradient(circle at 82% 8%, rgba(184, 216, 255, 0.4), transparent 30%),
-    radial-gradient(circle at 78% 86%, rgba(255, 179, 138, 0.35), transparent 30%),
-    #f7fbff;
+    radial-gradient(circle at 20% 18%, rgba(177, 240, 206, 0.25), transparent 35%),
+    radial-gradient(circle at 80% 10%, rgba(163, 216, 254, 0.22), transparent 32%),
+    radial-gradient(circle at 80% 88%, rgba(45, 106, 79, 0.12), transparent 30%),
+    var(--color-surface);
+}
+
+.glass-panel {
+  background-color: var(--color-surface-bright);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.gradient-primary {
+  background-image: linear-gradient(135deg, var(--color-primary), var(--color-primary-container));
+}
+
+.text-muted {
+  color: var(--color-on-surface-variant);
 }
 
 #root {

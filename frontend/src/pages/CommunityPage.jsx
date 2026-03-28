@@ -30,24 +30,24 @@ export default function CommunityPage() {
   }
 
   return (
-    <section className="space-y-4 rounded-3xl bg-white/90 p-5 shadow-playful">
+    <section className="space-y-4 rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-sm uppercase tracking-wide text-ink/60">{t("community.subtitle")}</p>
-          <h1 className="font-display text-3xl font-bold">{t("community.title")}</h1>
-          <p className="text-ink/70">{t("community.copy")}</p>
+          <p className="text-sm uppercase tracking-wide text-onSurfaceVariant">{t("community.subtitle")}</p>
+          <h1 className="font-display text-3xl font-bold text-onSurface">{t("community.title")}</h1>
+          <p className="text-onSurfaceVariant">{t("community.copy")}</p>
         </div>
         <Link
           to="/posts/new"
           state={{ title: t("dashboard.prefillTitle"), content: t("dashboard.prefillContent") }}
-          className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-white shadow-playful"
+          className="gradient-primary rounded-full px-4 py-2 text-sm font-semibold text-white shadow-floating"
         >
           ➕ {t("dashboard.quickPost")}
         </Link>
       </div>
 
       {!posts.length ? (
-        <p className="text-sm text-ink/70">{t("dashboard.noPosts")}</p>
+        <p className="text-sm text-onSurfaceVariant">{t("dashboard.noPosts")}</p>
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
           {posts.map((post) => (

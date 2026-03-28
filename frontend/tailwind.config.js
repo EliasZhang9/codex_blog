@@ -4,19 +4,29 @@ export default {
   theme: {
     extend: {
       colors: {
-        banana: "#ffe9a3", // softer yellow accent
-        mint: "#b9e8ce", // calm green
-        sky: "#b8d8ff", // light blue
-        coral: "#ffb38a", // warm accent
-        grape: "#b7a8e3", // gentle purple accent
-        ink: "#1f2d3d" // slightly deeper for contrast
+        primary: "var(--color-primary)",
+        primaryContainer: "var(--color-primary-container)",
+        primaryFixed: "var(--color-primary-fixed)",
+        secondaryContainer: "var(--color-secondary-container)",
+        onSecondaryContainer: "var(--color-on-secondary-container)",
+        onSurface: "var(--color-on-surface)",
+        onSurfaceVariant: "var(--color-on-surface-variant)",
+        outlineVariant: "var(--color-outline-variant)",
+        surface: "var(--color-surface)",
+        surfaceContainerLow: "var(--color-surface-container-low)",
+        surfaceContainerLowest: "var(--color-surface-container-lowest)",
+        surfaceContainerHigh: "var(--color-surface-container-high)",
+        surfaceBright: "var(--color-surface-bright)",
+        surfaceDim: "var(--color-surface-dim)"
       },
       fontFamily: {
-        display: ["Manrope", "Poppins", "sans-serif"],
-        body: ["Manrope", "Poppins", "sans-serif"]
+        display: ["Manrope", "Plus Jakarta Sans", "sans-serif"],
+        body: ["Plus Jakarta Sans", "Manrope", "sans-serif"]
       },
       boxShadow: {
-        playful: "0 10px 20px rgba(35, 49, 66, 0.16)",
+        playful: "0 10px 20px rgba(35, 49, 66, 0.12)",
+        ambient: "0 32px 64px rgba(15, 82, 56, 0.08)",
+        floating: "0 12px 28px rgba(15, 82, 56, 0.12)"
       },
       keyframes: {
         wiggle: {
@@ -33,7 +43,9 @@ export default {
       },
       spacing: {
         4.5: "1.125rem",
-        5.5: "1.375rem"
+        5.5: "1.375rem",
+        20: "5rem",
+        24: "6rem"
       }
     },
   },
