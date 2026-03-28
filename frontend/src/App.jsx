@@ -23,8 +23,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-surface text-onSurface pb-24 md:pb-10">
       <Navbar />
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 md:px-8">
-        <div className={isAuthenticated ? "grid gap-6 lg:grid-cols-[240px_1fr]" : ""}>
+      <main className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-10 md:px-8">
+        <div className={isAuthenticated ? "grid gap-8 lg:grid-cols-[240px_1fr]" : ""}>
           {isAuthenticated && <Sidebar />}
           <div className="space-y-8">
             <Routes>

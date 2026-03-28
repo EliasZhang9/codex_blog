@@ -3,21 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --color-primary: #0f5b3a;
-  --color-primary-container: #1e7a52;
+  --color-primary: #0f5a39;
+  --color-primary-container: #0c6f4a;
   --color-primary-fixed: #b8e6c8;
   --color-accent: #6aa8c6;
-  --color-secondary-container: #d8eef6;
-  --color-on-secondary-container: #1f556b;
-  --color-surface: #f7fbf7;
-  --color-surface-container-low: #f1f6f2;
+  --color-secondary-container: #d6e9e0;
+  --color-on-secondary-container: #1c4d38;
+  --color-surface: #f5f8f5;
+  --color-surface-container-low: #eef3ef;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-high: #e7efe8;
+  --color-surface-container-high: #e4ece5;
   --color-surface-bright: #ffffffc7;
-  --color-surface-dim: #cdd6ce;
+  --color-surface-dim: #cfd7d0;
   --color-on-surface: #1b1f1d;
-  --color-on-surface-variant: #55635c;
-  --color-outline-variant: #d5ddd6;
+  --color-on-surface-variant: #58665f;
+  --color-outline-variant: #e6ece7;
 }
 
 body {
@@ -26,9 +26,9 @@ body {
   font-family: "Sora", "Inter", system-ui, sans-serif;
   color: var(--color-on-surface);
   background:
-    radial-gradient(circle at 22% 18%, rgba(184, 230, 200, 0.28), transparent 38%),
-    radial-gradient(circle at 82% 14%, rgba(137, 198, 196, 0.22), transparent 32%),
-    radial-gradient(circle at 78% 86%, rgba(15, 91, 58, 0.08), transparent 28%),
+    radial-gradient(circle at 24% 18%, rgba(184, 230, 200, 0.32), transparent 40%),
+    radial-gradient(circle at 80% 12%, rgba(137, 198, 196, 0.18), transparent 34%),
+    radial-gradient(circle at 80% 86%, rgba(15, 91, 58, 0.08), transparent 30%),
     var(--color-surface);
 }
 

@@ -217,7 +217,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <section className="space-y-6 rounded-3xl bg-surfaceContainerLow p-6 shadow-playful md:p-8">
+    <section className="space-y-6 rounded-3xl border border-outlineVariant/50 bg-surfaceContainerLowest p-6 shadow-playful md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-xs uppercase tracking-wide text-onSurfaceVariant">Vitals Overview</p>
@@ -243,7 +243,12 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[1.4fr_0.9fr]">
-        <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
+        <div
+          className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful border border-outlineVariant/60"
+          style={{
+            background: "radial-gradient(circle at 28% 24%, rgba(184,230,200,0.22), transparent 55%), #f9fbf9"
+          }}
+        >
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-sm font-semibold text-onSurface">Metabolic Balance</p>
@@ -319,11 +324,11 @@ export default function DashboardPage() {
 
       <div className="grid gap-3 md:grid-cols-3">
         {[
-          { label: "Hydration", value: "1.4 / 2.5L", color: "bg-primaryFixed", icon: "💧" },
-          { label: "Movement", value: "8,420 steps", color: "bg-primary", icon: "🦶" },
-          { label: "Sleep Quality", value: "7h 20m • Deep", color: "bg-primaryContainer", icon: "🌙" }
+          { label: "Hydration", value: "1.4 / 2.5L", color: "bg-primaryFixed", width: "55%", icon: "💧" },
+          { label: "Movement", value: "8,420 steps", color: "bg-primary", width: "82%", icon: "🦶" },
+          { label: "Sleep Quality", value: "7h 20m • Deep", color: "bg-primaryContainer", width: "68%", icon: "🌙" }
         ].map((metric) => (
-          <div key={metric.label} className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful ring-1 ring-outlineVariant/60">
+          <div key={metric.label} className="rounded-cozy bg-surfaceContainerLowest p-4 shadow-playful border border-outlineVariant/60">
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-surfaceContainerHigh text-lg">{metric.icon}</span>
               <div>
@@ -332,14 +337,14 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="mt-3 h-2 rounded-full bg-surfaceContainerHigh">
-              <div className={`h-2 rounded-full ${metric.color}`} style={{ width: "68%" }} />
+              <div className={`h-2 rounded-full ${metric.color}`} style={{ width: metric.width }} />
             </div>
           </div>
         ))}
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]" ref={weightFormRef}>
-        <form className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60" onSubmit={handleSubmit}>
+        <form className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful border border-outlineVariant/60" onSubmit={handleSubmit}>
           <div className="flex items-center justify-between gap-3">
             <h2 className="font-display text-xl text-onSurface">{t("dashboard.quickLog")}</h2>
             <span className="rounded-full bg-surfaceContainerLow px-3 py-1 text-xs font-semibold text-onSurfaceVariant shadow-inner">
@@ -380,7 +385,7 @@ export default function DashboardPage() {
           </div>
         </form>
 
-        <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
+        <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful border border-outlineVariant/60">
           <div className="flex items-center justify-between gap-2">
             <div>
               <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.bmrLabel")}</p>
@@ -473,7 +478,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful border border-outlineVariant/60">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-xl text-onSurface">{t("dashboard.history")}</h2>
           <div className="flex gap-2 text-xs font-semibold">
@@ -518,7 +523,7 @@ export default function DashboardPage() {
         )}
       </div>
 
-      <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful ring-1 ring-outlineVariant/60">
+      <div className="rounded-cozy bg-surfaceContainerLowest p-5 shadow-playful border border-outlineVariant/60">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs uppercase text-onSurfaceVariant">{t("dashboard.communityLabel")}</p>
